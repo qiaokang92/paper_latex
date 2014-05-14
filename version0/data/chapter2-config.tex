@@ -22,11 +22,15 @@
 
 %% 2.1
 
-\section{ELF文件结构介绍}
+\section{与插入相关的ELF结构知识}
 
-
+对ELF格式文件进行二进制层面的修改，
+首先要对其文件格式有比较深入的了解。
 ELF的文件格式在\cite{elf1.2}中有着详尽的描述，
-本节介绍笔者认为对于ELF文件注入技术有重要关联的地方。
+在此不再对ELF文件格式的细节进行罗列，
+而是介绍一些关键的知识，
+并讨论这些知识与我们的插入工作有何关联，
+以及它们如何能决定插入的成败。
 
 \subsection{ELF文件类型}
 
@@ -99,11 +103,14 @@ ELF文件中，存在以下的数据结构，来实现链接视图和执行视�
 \textbf{ELF文件头部：}
 图\ref{header}是一个典型的ELF文件头的内容
 ELF文件头位于ELF文件的起始部分，是两种视图都必要的数据结构。
-除了标志该文件是ELF文件及其类型之外，头部最重要的作用在于，
-指明了节区头部表和程序头部表的偏移，以及节区和段的数量。
-%\begin{itemize}
- % \item 节区和节区头部表
-%\end{itemize}
+除了标志该文件是ELF文件及其类型之外，头部最重要的作用
+在于标明了以下三点：
+
+\begin{itemize}
+  \item 程序入口点位置
+  \item 节区头部表位置和节区的数量
+  \item 程序头部表位置和段的数量 
+\end{itemize}
 
 \begin{figure}[h!]
   \centering
@@ -113,7 +120,7 @@ ELF文件头位于ELF文件的起始部分，是两种视图都必要的数据�
 \end{figure}
 
 \textbf{节区和节区头部表：}
-图\ref{sections}展示了/bin/ls文件的节区头部表，
+图\ref{sections}展示了/bin/ls文件的节区头部表的一部分，
 在链接视图中，节区用于划分文件中不同类型的数据。
 例如.text节用于存放代码，.data节用于存放数据等。
 链接两个目标文件的的其中一步，就是把
@@ -335,26 +342,68 @@ Silvio Cesare由于在1998年提出的最原始的UNIX病毒模型\upcite{silvio
 而曾被称为“ELF大师（ELF master）”。
 在这一病毒模型中，病毒在感染其他文件时，
 采取了一种不同的方式。
-由于在Linux系统下，ELF文件中的可加载段需要进行地址对齐，
-于是在段之间会产生了较多的空闲的地址空间，
-可以在在这一空间中插入外来的代码。
-%%%
 具体来说是在第一个可加载段（俗称的代码段）最后一节的最后插入代码。
 这一方案具有很大的通用性，
 因为不论ELF文件有多大，
-平均下来，每个段之间都有大概4KB/2=2KB的空间供我们插入。
-即使总共才只有7KB的“hello,world!”程序也不例外。
-%%
-而且由于Linux为了节省物理内存，
-采取了部分物理页面映射两次到虚拟页面的做法，
-这一空间甚至有可能大于4KB。
-%%
-由于这一方案提供了一个比较有通用性的插入办法，
-后续的很多研究和实践，如\cite{simple,shared,cerberus,subversive,prototype}，
-都是围绕它进行的改进或者在其基础上的进一步研究。
+前两个加载段之间都有大概4KB的地址空间供我们插入。
+即使总共才只有7KB的“hello,world!”程序也不例外，如图\ref{hello}所示。
+第一个LOAD段的结束地址为0x80485b4(0x8048000+0x5b4),
+而第二个LOAD段从0x8049f08才开始，
+两个段之间有多达0x1954的空闲地址空间。
 
-下面简要描述了这一插入算法。
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{figure/helloprograms.png}
+  \caption{hello程序的程序头部表}
+  \label{hello}
+\end{figure}
+%%
 
+之所以会出现这么大的空闲地址空间，
+来源于Linux（包括一些其他的UNIX）的特殊的段加载机制。
+因为如果完全按照0x1000来对齐段的起始地址，
+将会对物理内存产生巨大的浪费。
+从图\ref{hello}可以看出，
+hello程序的第一个段只有0x5b4字节大小，
+让它完全占有一个物理段，那就会产生0x1000-0x5b4=0xac4字节的浪费，
+空间利用率只有35.6\%。
+
+
+针对这种浪费，Linux的做法是通过分配更多的虚拟内存来
+换取物理内存的节约。
+具体做法是把可执行文件从偏移0处开始，
+按照页大小进行划分，
+划分得到的每个页面作为一个物理页面加载。
+这样的问题在于有的物理页面会包含两个ELF段，
+这时只需要把这样的物理段映射两次到虚拟地址空间即可。
+如图\ref{linuxmap}，假设一个ELF文件有三个段需要加载，
+在使用这种段合并机制的情况下，
+三个段之间会产生两段空余的地址空间。
+
+%%%%%%
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figure/linuxmap.eps}
+  \caption{Linux加载机制中的段合并}
+  \label{linuxmap}
+\end{figure}
+
+
+
+显然，在物理地址空间中，页面利用率大幅提高，
+但在虚拟地址空间中留下了尺寸不小的碎片，
+图\ref{linuxmap}的情况是碎片大概1页大小，
+但在有些gcc的版本中，这一大小甚至接近两个页。
+这一空间便可以被我们用于插入代码。
+要注意的是，虽然原理上，
+数据段最后的剩余空间同样可以利用，
+但这需要修改数据段的可写属性，
+不如插在代码段之后更为便捷。
+因此在\cite{silvio}的算法中，
+代码的插入位置是在代码段之后。
+
+下面简要描述了这一插入算法：
 
 1、修改ELF文件头中的entrypoint字段，指向即将插入代码的位置
 （代码段offset+filesz）
@@ -372,8 +421,12 @@ Silvio Cesare由于在1998年提出的最原始的UNIX病毒模型\upcite{silvio
 
 7、修改的插入代码，插入一条jmp指令，跳转回原先的entrypoint。
 
+这一算法提出之后，大量的针对ELF乃至Linux内核的研究
+都借鉴了其插入代码的思路，
+如\cite{simple,prototype,subversive,cerberus,shared}。等
+
 在这一算法的基础上，我实现和完善了这一方法的python版本（见附录\ref{???}）。
-并增加了一些自定义的功能。下面借助一个例子来说明其原理。
+并增加了一些自定义的功能。下面借助一个例子来进一步说明其原理。
 
 这个例子的目标是在一个hello程序中插入代码，
 插入代码的任务则是借助Linux的系统调用，
@@ -403,11 +456,175 @@ Silvio Cesare由于在1998年提出的最原始的UNIX病毒模型\upcite{silvio
   \caption{可执行文件插入代码前后的程序头表对比}
 \end{figure}
           
-图\ref{??}展示了插入的代码如何通过修改程序入口点
-对程序原有的正常执行流进行篡改
+图\ref{dia}展示了插入的代码如何通过修改程序入口点
+对程序原有的正常执行流进行篡改。
+在程序未被修改前，
+ELF头的入口点指向代码段的起始位置，如图\ref{dia1}。
+通过修改ELF头的入口点，
+使它指向我们插入代码的位置；
+在插入代码的最后，跳转回原入口点的位置，
+以保证程序的正常执行，如图\ref{dia2}。
+
+\begin{figure}[h!]
+   \centering
+  \begin{tabular}{cc}
+    \subfigure[插入前]{
+      \label{dia1}
+      \includegraphics[width=0.3\textwidth]{figure/dia1.png}
+     }  
+    \hspace{4em}
+    \subfigure[插入后]
+     {
+        \label{dia2}
+      \includegraphics[width=0.3\textwidth]{figure/dia2.png}
+     }
+    \end{tabular}
+  \caption{可执行文件代码插入前后执行流程对比}
+  \label{dia}
+\end{figure}
 
 
 \subsection{在代码段之前插入代码}
+
+虽然利用代码段最后可能空余的地址空间来插入代码，
+已经成为了一种比较成熟的手段，
+但这种方法的局限性仍然是不可忽视的。
+最重要的一点就是其插入的代码量存在限制。
+一般来说，如果插入代码量最好保证在1KB之内，
+一旦超过2KB，几乎是不可能成功的。
+
+然而，一个高效而便捷的工具ELFsh\upcite{elsh}
+提供了一种新的插入思路，
+即把代码插入至代码段之前。
+我们知道，对于一个运行在IA32上的Linux系统来说，
+一个进程的地址空间中，代码段总是开始于0x8048000，
+然而从0到0x8047fff这段空间一般不被使用。
+该工具的思路就是把需要执行的代码插入至
+可执行文件的第一个加载段之前。
+
+ELFsh工具功能强大，
+它以一个.o文件和一个可执行文件作为输入。
+不但能够讲.o中的可执行代码插入至可执行文件中，
+还能插入.o文件携带的数据节、bss节和符号表。
+并能够对插入代码的所有重定位入口进行重定位。
+
+下面简要说明其插入流程：
+
+1、将.o文件的.bss节插入合并到可执行文件的.bss节中。
+
+2、遍历.o文件的所有节区，判断是否具有以下条件
+\begin{itemize}
+  \item 存在标志位（说明该节区需要被加载到进程空间中）
+  \item 在文件中占据空间（排除.bss节区）
+  \item 节区类型为值为SHT\_PROGBITS，说明该节区为程序节或者代码节。
+\end{itemize}
+  
+对于同时满足这些条件的节区，再判断节区是否具有可写属性，
+对于具有可写属性的节区（数据节），插入到.bss节之后；
+其他节区插入到第一个节区之前。
+
+3、把.o文件的符号表合并至可执行文件中。
+
+4、对于.o文件中的所有节区，如果已经被
+插入到了可执行文件中，并且需要重定位，
+则对其进行重定位。
+
+下面演示ELFsh工具的效果。
+我们的目标是劫持/bin目录下的ls程序。
+我们首先编写一个简单的程序，
+源代码见\ref{myprintf.c}，
+然后把它编译为myprintf.o即可。
+我们的目标是把它注入到ls程序中。
+每次运行ls，都会先打印一行"hi, you're hijacked!"。
+
+\begin{lstlisting}[
+  language={C},
+  caption={myprintf.c源代码},
+  label={myprintf.c},
+]
+#include<stdio.h>
+void myprintf(){
+    printf("hi, you're hijacked!");
+}
+\end{lstlisting}
+
+图\ref{fig-matrix}反映了ls程序被插入前后的节头表（只展示了前20个）
+和程序头表的变化。
+由图可以发现，在ELFsh向可执行文件注入了9个节区，
+并都位于可执行文件的第一个节区，即.interp节之前。
+（此外还进行了符号表和.bss节的合并，这里看不出来）。
+程序头表方面，可以发现段的数目并没有变化，
+但是第一个段的起始地址由0x8048000提前到了0x803c000，
+这也说明注入的代码使用了0x8048000之前的地址空间。
+此外，位于后面的段在文件中的偏移也相应地增加了0xc000，
+说明我们在.interp段之前总共插入了0xc000字节的代码，
+即12个页，
+试想一下，如果使用nop插入或者插入到段间的空闲地址，
+这几乎是不可能完成的任务。
+
+\begin{figure}[h!]
+    \centering
+    \begin{tabular}{cc}
+        \subfigure[插入前节头表]{
+            \label{fig-matrix-a}
+            \includegraphics[width=.46\textwidth]{figure/sht1.png}
+        } \hspace{2em} &
+        \subfigure[插入前程序头表]{
+            \label{fig-matrix-b}
+            \includegraphics[width=.38\textwidth]{figure/pht1.png}
+        } \\
+        \subfigure[插入后节头表]{
+            \label{fig-matrix-c}
+            \includegraphics[width=.46\textwidth]{figure/sht2.png}
+        } \hspace{2em} &
+        \subfigure[插入后程序头表]{
+            \label{fig-matrix-d}
+            \includegraphics[width=.38\textwidth]{figure/pht2.png}
+        }\\
+    \end{tabular}
+    \caption{插入前后ls程序头表和节头表变化}
+    \label{fig-matrix}
+\end{figure}
+
+插入一旦完成，劫持工作就会很容易进行。
+我们只需要手动修改ELF文件的入口点，
+指向myprintf函数的地址，然后手动修改该函数的最后几条指令，
+跳回原入口点即可
+（回想一下，函数结尾往往有nop指令串，因此这很容易实现）。
+
+最后的达到的效果如图\ref{ls}所示。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=.6\textwidth]{figure/ls.png}
+    \caption{修改后的ls程序运行结果}
+    \label{ls}
+\end{figure}
+
+
+
+
+%	- Compute section size congruent with page size
+%	- Create new section's header
+%	- Inject section header (see SHT header insertion algorithm)
+%	FOREACH PHT entry
+%	[
+%	   IF a/ segment type is loadable (p_type == PT_LOAD)
+%	      b/ segment is executable (p_flags & PF_X)
+%	   [
+%	      - Add section's size to p_filesz and p_memsz
+%	      - Substract section's size from p_vaddr and p_paddr
+%	   ]
+%	   ELSE IF segment type is PT_PHDR
+%	   [
+%              - Substract section's size from p_vaddr and p_paddr
+%	   ]
+%	   ELSE
+%	   [
+%	      - Add section's size to p_offset
+%	   ]
+%       ]
+%       - Shift SHT (see algorithm below)
 
 \section{动态链接文件劫持技术}
 
