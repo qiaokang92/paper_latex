@@ -22,7 +22,7 @@
 
 %% 2.1
 
-\section{与插入相关的ELF结构知识}
+\section{ELF相关知识和讨论}
 
 对ELF格式文件进行二进制层面的修改，
 首先要对其文件格式有比较深入的了解。
@@ -601,40 +601,211 @@ void myprintf(){
     \label{ls}
 \end{figure}
 
-
-
-
-%	- Compute section size congruent with page size
-%	- Create new section's header
-%	- Inject section header (see SHT header insertion algorithm)
-%	FOREACH PHT entry
-%	[
-%	   IF a/ segment type is loadable (p_type == PT_LOAD)
-%	      b/ segment is executable (p_flags & PF_X)
-%	   [
-%	      - Add section's size to p_filesz and p_memsz
-%	      - Substract section's size from p_vaddr and p_paddr
-%	   ]
-%	   ELSE IF segment type is PT_PHDR
-%	   [
-%              - Substract section's size from p_vaddr and p_paddr
-%	   ]
-%	   ELSE
-%	   [
-%	      - Add section's size to p_offset
-%	   ]
-%       ]
-%       - Shift SHT (see algorithm below)
-
 \section{动态链接文件劫持技术}
+
+如今Linux下的大部分程序都开始使用动态链接。
+动态链接的程序对外部库函数的调用，
+需要通过got（Global Offset Table,全局偏移表）和
+plt两个数据结构间接进行。
+这在某种程度上为我们劫持这些库函数外部库函数
+提供了方便。
+因为我们可以利用这一层中转，
+通过篡改got和plt来劫持函数调用，
+而不需要直接修改代码部分中的地址或者被劫持函数中增加跳转。
 
 \subsection{利用修改共享库地址和名称进行劫持}
 
+ELF中文件关于动态链接的细节，
+应参见\cite{elf1.2}，
+然而，本条中讲述的劫持方法，
+不但简单明了，而且像教科书一般阐明了ELF中
+对动态库函数的引用机制。
+
+我们的目标仍然是劫持/bin/ls程序，这一次我们不修改
+任何程序中的代码，包括nop指令串，
+而仅仅是修改文件中一个与动态链接
+有关的数据结构，即.dynamic节。
+就可以实现对它的劫持。
+
+ls程序的.dynamic节如图\ref{lsdyn1}所示。
+类型为“NEEDED”的入口指明了该程序所依赖的共享对象，
+这些共享对象默认位于/lib目录下。
+如果我们能够在这里面加一个条目，
+填上我们自己编写的共享对象名称，
+那程序运行过程中，是否就会链接到我们自己的共享对象，
+甚至引用我们自己编写的函数呢？
+答案是肯定的。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=.6\textwidth]{figure/lsdyn1.png}
+    \caption{ls程序的.dynamic节}
+    \label{lsdyn1}
+\end{figure}
+
+
+由于ls函数每次运行，
+都会调用动态C库（libc.so.6）中的一些函数，
+例如opendir()函数。
+假设我们的目标是劫持这个函数，
+我们只需要自行编写一个同名函数，
+并编译为一个共享对象，
+例如rt.so.1，放在/lib下。
+rt.so.1的源代码见\ref{rt}，
+其中使用了显式运行时链接技术，
+即在函数体中显式地调用“原版”的opendir()函数。
+
+\begin{lstlisting}[
+  language={C},
+  caption={rt.so.1源代码},
+  label={rt},
+]
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <dirent.h>
+#include <dlfcn.h>
+
+#define LIBC_PATH    "/lib/i386-linux-gnu/libc.so.6"
+
+DIR     *opendir(const char *name)
+{
+   void  *handle;
+   void  *(*sym)(const char *name);
+
+   handle = dlopen(LIBC_PATH, RTLD_LAZY);
+   sym = (void *) dlsym(handle, "opendir");
+   printf("hi, you're hijacked!"); 
+   return (sym(name));
+}
+\end{lstlisting}
+
+下面我们要做的是让ls程序执行时调用自己编写的
+opendir()，而不是调用libc.so.6中的原版函数。
+我们注意到.dynamic节中有一个入口的类型为“DEBUG”，
+这个入口在程序实际运行中并没有实际作用。
+因此我们把它的值和类型修改为与第二个条目相同。
+然后把第二个类型为NEEDED条目的的值改为"rt.so.1"即可。
+修改结果如图\ref{lsdyn2}所示。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=.6\textwidth]{figure/lsdyn2.png}
+    \caption{修改后的ls程序的.dynamic节}
+    \label{lsdyn2}
+\end{figure}
+
+这样一来，ls在动态链接过程中，
+就会将我们自己编写的rt.so.1链接进来。
+并且由于在.dynamic节中，
+rt.so.1位于libc.so.6之前，
+因此在动态链接器的符号解析过程中，
+因此我们编写的opendir()将会取代原版的函数，
+因此在执行中，被调用的是我们编写的opendir()函数。
+修改完成后，我们可以得到与图\ref{ls}类似的结果。
+
 \subsection{利用修改plt和got进行劫持}
+
+上一条介绍的动态链接库劫持技术，
+看似非常简单，但实际应用中，
+可能有不少的限制，比如：
+
+\begin{itemize}
+  \item 可执行文件的.dynamic节不存在“DEBUG”入口
+  \item 没有足够的权限向/lib下添加动态库文件
+  \item 自行编写的库函数不能找到原版的库函数 
+\end{itemize}
+
+以上任何一点都会导致这种方法变得无比复杂，最后失败。
+本条我们回归原始的物理插入方式，
+看看能否通过插入代码来实现劫持。
+
+劫持动态库函数的调用，
+需要我们插入两段代码：
+A段在函数入口点处执行，作用是帮助我们修改got，
+定位到插入库函数的位置。
+B段则是我们插入的库函数。
+这两段代码的插入可以用上一节中描述的三种方法
+的任意一中来进行。
+
+两段代码的算法简要描述如下：
+
+A：
+
+1、使用系统调用，为代码段增加可写属性。
+
+2、保存got中对应条目的地址，记为original\_got。
+
+3、将got中条目的地址修改为插入的库函数的地址。
+
+B：
+
+1、执行目的操作，例如打印一行信息。
+
+2、恢复got中旧的条目的地址。
+
+3、恢复堆栈，调用原库函数。
+
+4、保存got中的地址，覆盖original\_got。
+
+5、将got中的地址替换为插入的库函数的地址。
+
+在B代码的第4步要重新保存一遍original\_got，
+因为动态链接程序大都是用“延迟绑定”机制，
+在第一次调用库函数时，
+会经过plt进行一次间接跳转，
+并会调用动态链接器进行重定位，
+从而修改got中的地址。具体的细节可参见\cite{elf1.2}。
+
 
 \section{ELF文件插入技术总结}
 
-\section{ELF插入技术在vxWorks中的使用分析}
+至此，我们已经介绍了5种对ELF文件进行插入的技术，
+包括三种针对静态编译程序的物理插入方法，
+和两种劫持动态链接程序的方法。
+本节对上述的方法进行总结和补充。
+
+表\ref{conclusion1}首先对展示了
+三种静态ELF文件的插入技术的对比情况。
+
+\begin{table}
+  \centering
+  \caption{ELF代码插入技术对比}
+  \label{conclusion1}
+  \begin{tabular}{l|l|l|l}
+     \hline
+     插入技术  & 利用nop指令串 & 插入到代码段之后&插入到代码段之前 \\\hline \hline
+ 可插入代码量  & 约为文件大小的1/100  & 少于1KB & 大于100KB   \\ \hline
+   劫持位置    &  本地   &   本地 & 本地            \\ \hline
+  编写插入代码的语言 & 汇编语言 & 汇编语言 & C语言  \\ \hline
+   插入代码调用外部函数& 手动寻址  & 手动寻址 & 自动重定位       \\ \hline  
+     局限性  & 插入代码量依赖文件大小&插入代码量小于1KB& -       \\ \hline
+  \end{tabular}
+\end{table} 
+
+表\ref{conclusion2}展示了两种动态劫持机制的对比情况。
+
+\begin{table}
+  \centering
+  \caption{动态链接文件劫持技术对比}
+  \label{conclusion2}
+  \begin{tabular}{l|l|l}
+     \hline
+     劫持技术  & 通过修改.dynamic结构&通过修改got   \\\hline \hline
+ 可插入代码量  & 不限  & 与使用的代码插入技术相关   \\ \hline
+   劫持位置    & 外部库函数 & 外部库函数            \\ \hline
+  编写插入代码的语言 & C语言 & 汇编语言         \\ \hline
+   插入代码调用外部函数 & 自动重定位  & 手动寻址       \\ \hline  
+     局限性  & 见2.3.2 & 较为繁琐，移植性差       \\ \hline
+  \end{tabular}
+\end{table} 
+
+ 
+
+
+
+%\section{ELF插入技术在vxWorks中的使用分析}
 
 %%
 %%\section{C\TeX{}套装 [Windows Only]}
