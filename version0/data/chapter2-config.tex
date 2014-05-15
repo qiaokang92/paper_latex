@@ -423,7 +423,7 @@ hello程序的第一个段只有0x5b4字节大小，
 
 这一算法提出之后，大量的针对ELF乃至Linux内核的研究
 都借鉴了其插入代码的思路，
-如\cite{simple,prototype,subversive,cerberus,shared}。等
+如\cite{simple,prototype,subversive,cerberus,sharelib}。等
 
 在这一算法的基础上，我实现和完善了这一方法的python版本（见附录\ref{???}）。
 并增加了一些自定义的功能。下面借助一个例子来进一步说明其原理。
@@ -493,7 +493,7 @@ ELF头的入口点指向代码段的起始位置，如图\ref{dia1}。
 一般来说，如果插入代码量最好保证在1KB之内，
 一旦超过2KB，几乎是不可能成功的。
 
-然而，一个高效而便捷的工具ELFsh\upcite{elsh}
+然而，一个高效而便捷的工具ELFsh\upcite{elfsh}
 提供了一种新的插入思路，
 即把代码插入至代码段之前。
 我们知道，对于一个运行在IA32上的Linux系统来说，
