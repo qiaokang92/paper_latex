@@ -22,13 +22,13 @@ dosFs文件系统监控的功能。
 与介绍ELF插入技术时一样，
 我们并不罗列太多的细节，
 而是重点讨论与我们的插入工作相关的部分。
-本章所有的工作都是围绕vxWorks 5.5展开的，
-本章中余下部分提到的VxWorks，
+本章所有的工作都是围绕VxWorks 5.5展开的，
+本文中余下部分提到的VxWorks，
 如果没有特别说明，
 都是指5.5版本。
 
 
-\subsection{vxWorks概述}
+\subsection{VxWorks概述}
 
 VxWorks操作系统是美国风河公司旗下的一款嵌入式实时操作系统。
 该系统由于其高实时性、高可靠性，在嵌入式实时操作系统领域
@@ -39,7 +39,7 @@ VxWorks操作系统是美国风河公司旗下的一款嵌入式实时操作系�
 以下几项与我们的二进制插入工作有密切关系：
 
 \begin{itemize}
- \item Tornado, 风河公司推出的图形化开发工具，
+ \item Tornado 2.2, 风河公司推出的图形化开发工具，
 我们使用该工具创建了可加载的VxWorks系统镜像，
 在其基础上进行二进制层面的修改。
  \item FTP Server, 是Tornado自带的FTP程序，
@@ -127,7 +127,7 @@ RAM中的RAM\_HIGH\_ADRS处。
 内存布局。
 然而针对特定的体系结构，内存布局有很大的区别。
 
-回顾在xxx中提到的关于ELF文件插入的两个问题：
+回顾在2.1.3中提到的关于ELF文件插入的两个问题：
 文件空间与地址空间。
 要寻找合适的空闲的地址空间，
 我们需要熟悉VxWorks运行中的详细内存布局。
@@ -146,8 +146,7 @@ RAM中的RAM\_HIGH\_ADRS处。
 然而，从图中不难看出：
 在VxWorks系统镜像的低地址和高地址两个方向，
 均有明确的定义和用途。
-其中，RAM\_LOW\_ADRS之前
-（即.text节之前的地址）的低端内存区，
+其中，RAM\_LOW\_ADRS之前的低端内存区，
 被用作初始化堆栈。
 系统的初始化流程借助这一区域实现函数调用。
 而FREE\_RAM\_ADRS之后的地址，
@@ -167,8 +166,8 @@ RAM中的RAM\_HIGH\_ADRS处。
 这意味着我们只需要一台x86的PC就可以完成所有工作。
 然而实际上我使用了两个平台：
 \begin{itemize}
-  \item 一台Linux机器用于修改VxWorks系统映像。
-  \item 一台Windows机器用于运行Tornado和Vmware。
+  \item 一台x86的Linux机器用于修改VxWorks系统映像。
+  \item 一台x86的Windows机器用于运行Tornado和Vmware。
 \end{itemize}
 
 \subsection{Linux主机}
@@ -238,7 +237,7 @@ Windows主机的主要任务包含以下几点：
 代码和数据节映射到一个段，
 这也就意味着该段必须同时具有可读可写和可执行三类属性。
 
-这种特殊性对我们的插入有什么影像呢？
+这种特殊性对我们的插入有什么影响呢？
 回顾一下以前的内容，
 要实现代码插入，
 最重要的是寻找空闲的地址空间。
@@ -258,7 +257,7 @@ Windows主机的主要任务包含以下几点：
 另一方面，由于数据节也被赋予了执行属性，
 因此在数据节的地址空间中写入代码，
 理论上也是可行的。
-下文分别利用这两种办法实现
+下文介绍如何在插入代码的基础上实现
 对VxWorks系统中的usrAppInit函数的劫持。
 
 
@@ -321,7 +320,7 @@ ret                     ;返回usrAppInit函数第四条指令处。
 \end{lstlisting}
 
 这里的重点不在于我们插入的技术有多么先进，
-而是插入的代码提供了一种通用的劫持任意函数的方法
+而是插入的代码提供了一种通用的劫持任意函数的方法。
 即无论我们在何种位置插入代码来劫持任意一个函数，
 总是可以通过以下几个步骤来劫持一个函数的入口：
 
@@ -339,10 +338,15 @@ ret                     ;返回usrAppInit函数第四条指令处。
 即被劫持函数地址+6。
 
 插入完成后，VxWorks在启动完成后，
-通过Target Server可以看到打印出的字符串“HELLO！”，
+系统在屏幕上首先打印出字符串“HELLO！”，
 如图\ref{nophello}所示。
 
-
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.64\textwidth]{figure/nophello.jpg}
+    \caption{利用nop进行代码插入后的VxWorks运行结果}
+    \label{nophello}
+\end{figure}
 
 \subsection{通过覆盖数据段插入代码}
 
@@ -372,43 +376,169 @@ ret                     ;返回usrAppInit函数第四条指令处。
 我们无需讨论这是如何产生的以及编译器这么做的目的，
 至少在目前看来，
 插入代码到这些地方是看不出有什么风险的。
-例如，从反汇编器中可以看出，
-从3d4280h开始到3df9cfh这很长的一段地址空间中的数据。
-没有被任何代码所引用，如图\ref{data}。
-这说明某一处的代码定义了它们，
-但并没有使用。
+%%例如，从反汇编器中可以看出，
+%%从3d4280h开始到3df9cfh这很长的一段地址空间中的数据。
+%%没有被任何代码所引用，如图\ref{data}。
+%%这说明某一处的代码定义了它们，
+%%但并没有使用。
 
-我们尝试使用附录xx中的代码，
-来把较长一段的二进制代码插入到其中。
-运行VxWorks的结果证明，
-系统的正常运行没有受到影响。
+在下一章对文件监控操作的代码插入中，
+我们同时使用了3.3.1和3.3.2介绍的代码插入方法，
+并没有影响到系统的正常运行。
 
-
-\section{利用插入代码实现简单的文件操作监控}
-
-本节中，我们利用前文
-提供的劫持函数的方法。
-尝试在VxWorks镜像文件中，
-插入一段代码并劫持dosFs文件系统的操作。
-从而在系统中的应用程序进行文件读写操作时，
-可以截获这一操作，
-并在屏幕上打印操作的内容和相关信息。
-
-\subsection{dosFs文件系统}
-
-VxWorks文件系统中的dosFs是MS-DOS兼容的文件系统，
-可基于块对物理介质进行操作。
-它提供极大的灵活性以满足实时应用的各种要求。
-
-\subsection{劫持位置的选择}
-
-
-\subsection{劫持操作的实现}
-
-
-
-
-
+%%\section{利用插入代码实现简单的文件操作监控}
+%%
+%%\subsection{插入目的}
+%%
+%%本节中，我们利用前文
+%%提供的劫持函数的方法。
+%%尝试在VxWorks镜像文件中，
+%%插入一段代码并劫持dosFs文件系统的操作。
+%%从而在系统中的应用程序进行文件读写操作时，
+%%可以截获这一操作，
+%%并在屏幕上打印操作的内容和相关信息。
+%%
+%%\subsection{dosFs文件系统}
+%%
+%%VxWorks文件系统中的dosFs是MS-DOS兼容的文件系统，
+%%可基于块对物理介质进行操作。
+%%它提供极大的灵活性以满足实时应用的各种要求。
+%%在VxWorks操作系统中，
+%%文件系统的位置位于IO系统和驱动程序之间。
+%%它们之间的层次结构如图\ref{iosys}所示。
+%%
+%%\begin{figure}[h!]
+%%    \centering
+%%    \includegraphics[width=0.21\textwidth]{figure/IOsys.eps}
+%%    \caption{VxWorks中的IO系统图示}
+%%    \label{iosys}
+%%\end{figure}
+%%
+%%具体到某个文件操作，例如open操作。
+%%应用程序可以调用
+%%库函数或者直接使用IO函数的时候，
+%%他们都会调用dosFs中的dosFsOpen函数，
+%%进而再调用驱动程序对应的函数。
+%%最后达到访问硬件的目的。整个流程如图\ref{open}
+%%
+%%\begin{figure}[h!]
+%%    \centering
+%%    \includegraphics[width=0.55\textwidth]{figure/open.eps}
+%%    \caption{打开一个文件的函数调用流程}
+%%    \label{open}
+%%\end{figure}
+%%
+%%\subsection{劫持原理简述}
+%%
+%%我们以劫持打开文件操作为例，
+%%阐述进行文件劫持操作的原理。
+%%首先我们要考察劫持的位置，
+%%即在图\ref{open}所示的哪一层的相应函数中插入跳转，
+%%执行我们的插入代码。
+%%我们选择对文件系统函数进行劫持，即dosFsOpen()。
+%%因为无论上层代码使用何种方式来进行文件操作，
+%%即无论使用哪一个库，
+%%都会最终调用到dosFsOpen()，
+%%dosFsOpen()函数的原型如代码\ref{open_prototype}所示。
+%%
+%%%% open函数的原型，C代码
+%%
+%%\begin{lstlisting}[
+%%  language={C},
+%%  caption={dosFsOpen()函数原型},
+%%  label={open_prototype},
+%%]
+%%LOCAL DOS_FILE_DESC_ID dosFsOpen
+%%    (    
+%%    DOS_VOLUME_DESC_ID  pVolDesc, /* pointer to volume descriptor */
+%%    char *      pPath,  /* dosFs full path/filename */
+%%    int         flags,  /* file open flags */
+%%    int         mode    /* file open permissions (mode) */
+%%    );
+%%\end{lstlisting}
+%%
+%%可见，dosFsOpen函数的
+%%传入参数包含了
+%%文件路径、文件打开的权限等信息。
+%%这也就意味着我们可以利用插入代码获取这些信息。
+%%而如果在更低层的驱动层来进行劫持，
+%%文件路径等信息就消失了，
+%%劫持工作很大程度上失去了意义。
+%%
+%%为了不影响dosFsOpen的正常运行。
+%%插入代码需要保证不污染原先的堆栈和寄存器。
+%%为了在编写插入代码时不考虑这些问题，
+%%而是当作编写一个正常的函数来进行，
+%%我们继续使用“中间层”的思路，
+%%我们称这一中间层为“proxy”，
+%%用于劫持的函数叫做hookFsOpen()。
+%%图\ref{proxy}展示了劫持dosFsOpen函数的跳转过程。
+%%
+%%\begin{figure}[h!]
+%%    \centering
+%%    \includegraphics[width=0.76\textwidth]{figure/proxy.eps}
+%%    \caption{劫持dosFsOpen的函数跳转流程}
+%%    \label{proxy}
+%%\end{figure}
+%%
+%%这样一来，
+%%我们就可以像编写正常的C语言函数一样，
+%%来编写hookFsOpen()。
+%%
+%%\subsection{劫持操作的实现}
+%%
+%%一个简单版本的hookFsOpen.c源代码附录xxxxx，
+%%其中使用了gcc的内嵌汇编功能，
+%%目的是通过读取栈来获得dosFsOpen()函数的参数。
+%%代码实现了两个功能：
+%%
+%%1、获取dosFsOpen函数的参数；
+%%
+%%2、调用printf打印pPath参数。
+%%
+%%为了能够一次性完成proxy和劫持函数的插入，
+%%我们将hookFsOpen.c编译为汇编代码，
+%%并在汇编代码中写入proxy代码，
+%%利用汇编代码的标签功能，
+%%proxy可以通过相对寻址找到hookFsOpen的位置。
+%%汇编代码形如代码\ref{finish}所示。
+%%
+%%\begin{lstlisting}[
+%% language={[x86masm]Assembler},
+%% caption={为插入而准备的汇编代码},
+%% label={finish},
+%%]
+%%global _start
+%%section .text
+%%_start:
+%%    push ebp                     
+%%    mov ebp,esp
+%%    sub esp, 0x18            ; 补上dosFsOpen开头被替换的指令
+%%    call hookFsOpen          ; 调用hookFsOpen，可通过相对寻址定位
+%%    push dosFsOpen+6         
+%%    ret                      ; 返回至dosFsOpen第四条指令处
+%%
+%%hookFsOpen:
+%%    ......
+%%    ......                   ; hookFsOpen函数体
+%%\end{lstlisting}
+%%
+%%接下来，
+%%即可利用前文介绍的任何一种可行的方法，
+%%将代码\ref{finish}进行汇编后，
+%%插入VxWorks系统镜像的合适位置。
+%%插入完成后，我们还需要进行几项修补和重定位工作：
+%%
+%%1、修改dosFsOpen函数的开头三条指令，跳转至proxy开始处。
+%%
+%%2、填写proxy中返回dosFsOpen()函数第四条指令的地址。
+%%
+%%3、对于hookFsOpen()中所有的函数引用（例如printf），修正其绝对地址。
+%%
+%%至此，我们对VxWorks系统中打开文件操作的劫持已经完成。
+%%为了测试这一劫持能否成功，
+%%我们编写了一个简单的用户程序代码，
+%%调用open
 
 % !Mode:: "TeX:UTF-8"
 %%\chapter{下载}
