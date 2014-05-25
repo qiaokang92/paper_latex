@@ -1,2 +1,157 @@
 % !Mode:: "TeX:UTF-8"
-\chapter{联系我们}
+\chapter{实现文件监控功能的源代码}
+\label{hook}
+
+\begin{lstlisting}[
+ language={C},
+]
+#include "stdio.h"
+#include "hookFs.h"
+#include "ioLib.h"
+#include "private/dosFsLibP.h"
+#include "vxWorks.h"
+#include "Assert.h"
+#include "hostLib.h"
+#include "netDrv.h"
+
+UINT32 read_ebp()
+{
+	UINT32 _ebp;
+	__asm__ volatile("movl %%ebp, %0" : "=r"(_ebp));
+	return _ebp;
+}
+
+time_t biostime()   
+{
+	struct tm ahora;
+	unsigned char cHour, cMin, cSec; 
+	unsigned char cDay, cMonth, cYear; 
+  
+	sysOutByte(0x70,0x00/*second*/); 
+	cSec = sysInByte(0x71); 
+	ahora.tm_sec = (cSec&0x0F) + 10*((cSec&0xF0)>>4); 
+  
+	sysOutByte(0x70,0x02/*minut*/); 
+	cMin = sysInByte(0x71); 
+	ahora.tm_min = (cMin&0x0F) + 10*((cMin&0xF0)>>4); 
+  
+	sysOutByte(0x70,0x04/*hour*/); 
+	cHour = sysInByte(0x71); 
+	ahora.tm_hour = (cHour&0x0F) + 10*((cHour&0xF0)>>4); 
+  
+	sysOutByte(0x70,0x07/*day*/); 
+	cDay = sysInByte(0x71); 
+	ahora.tm_mday = (cDay&0x0F) + 10*((cDay&0xF0)>>4); 
+  
+	sysOutByte(0x70,0x08/*month*/); 
+	cMonth = sysInByte(0x71); 
+	ahora.tm_mon = (cMonth&0x0F) + 10*((cMonth&0xF0)>>4) - 1; 
+  
+	sysOutByte(0x70,0x09/*year*/); 
+	cYear = sysInByte(0x71); 
+	ahora.tm_year = 100 + (cYear&0x0F) + 10*((cYear&0xF0)>>4); 
+  
+	return mktime(&ahora); 
+}
+
+void get_time(char datetime[])
+{
+	int res; 
+	struct timespec ts; 
+	struct tm daytime; 
+	time_t stime; 
+  
+	ts.tv_sec = biostime(); 
+	ts.tv_nsec = 0; 
+	res = clock_settime(CLOCK_REALTIME, &ts); 
+	
+	stime = time(NULL); 
+
+	daytime = *localtime(&stime);
+	strcpy(datetime, asctime(&daytime));
+}
+
+#define FUNC_HOOK_FS(name) \
+  void hookFs##name() \
+  {                                 \
+	UINT32 *_ebp; \
+	UINT32 arg; \
+	/*UINT32 arg0, arg1, arg2, arg3, arg4; */\
+	char nameBuf[MAX_PNAME_LEN]; \
+	PathNode *pn; \
+	DOS_FILE_DESC_ID pfd; \
+	if(!pHead) \
+	{ \
+		printf("NOTIFY NOT INIT.\n"); \
+		return; \
+	} \
+	pn = pHead->next; \
+	if(!pn) \
+		return; \
+	memset(nameBuf, 0, sizeof(nameBuf)); \
+	_ebp = (UINT32 *) read_ebp(); \
+	_ebp = _ebp[0]; \
+	/* arg0 = _ebp[2];\
+	arg1 = _ebp[3];\
+	arg2 = _ebp[4];\
+	arg3 = _ebp[5];\
+	arg4 = _ebp[6];*/\
+	if( !strcmp(#name, "Open") || !strcmp(#name, "Create")  ) { \
+		arg = _ebp[4]; \
+		strcpy(nameBuf, arg); \
+	} \
+	else if (!strcmp(#name, "Delete")) \
+	{ \
+		_ebp = (UINT32 *) read_ebp(); \
+		arg = _ebp[2];\
+		strcpy(nameBuf, arg); \
+	} \
+	else if( !strcmp(#name, "Close") ) \
+	{ \
+		arg = _ebp[2]; \
+		pfd = (DOS_FILE_DESC_ID)arg; \
+		dosChkBuildPath(pfd); \
+		strcpy(nameBuf, pfd->pVolDesc->pChkDesc->chkPath); \
+	} \
+	else { \
+		/* Get the pFd */ \
+		_ebp = (UINT32 *) read_ebp(); \
+		/*arg0 = _ebp[2];\
+		arg1 = _ebp[3];\
+		arg2 = _ebp[4];\
+		arg3 = _ebp[5];\
+		arg4 = _ebp[6];*/\
+		arg = _ebp[2]; \
+		pfd = (DOS_FILE_DESC_ID)arg; \
+		dosChkBuildPath(pfd); \
+		strcpy(nameBuf, pfd->pVolDesc->pChkDesc->chkPath); \
+	} \
+	while(pn) \
+	{ \
+		if(!strcmp(nameBuf, pn->pName) || !pathcmp(pn->pName, nameBuf)) \
+		{ \
+			char datetime[64]; \
+			char result[MAX_PNAME_LEN + 80]; \
+			memset(datetime, 0, sizeof(datetime)); \
+			get_time(datetime); \
+			memset(result, 0, sizeof(result)); \
+			strcpy(result,#name); \
+			strcat(result,"\t"); \
+			strcat(result,nameBuf); \
+			strcat(result,"\t"); \
+			strcat(result,datetime); \
+			strcat(result,"\r\n\0"); \
+			printf("%s\n",result); \
+			break; \
+		} \
+		pn = pn->next; \
+	} \
+}
+
+FUNC_HOOK_FS(Open);
+FUNC_HOOK_FS(Create);
+FUNC_HOOK_FS(Read);
+FUNC_HOOK_FS(Write);
+FUNC_HOOK_FS(Close);
+FUNC_HOOK_FS(Delete);
+\end{lstlisting}

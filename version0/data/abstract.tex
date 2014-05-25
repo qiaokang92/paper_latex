@@ -1,10 +1,70 @@
 % !Mode:: "TeX:UTF-8"
 \begin{cabstract}
-我是康乔本篇文档主要介绍{\bf 北航毕业设计论文\LaTeX{}模板}使用和相关软件环境的安装配置，
-以及本模板所遵循的开源协议等。
+%%%
+本文较为详细地整理和分析了已有的UNIX/Linux下
+针对可执行链接文件的插入技术。
+并针对它们的特点和适用范围做了总结。
+%%%
+接着考察了这些插入技术在VxWorks 5.5系统镜像中
+实施的可能性。
+进而选择合适的插入技术,
+%%%
+实现对于VxWorks 5.5操作系统映像文件的二进制插入操作。
+
+
+在插入代码的基础上，
+通过修改镜像文件中的指令执行流，
+劫持某个特定的函数，
+从而当该函数被调用时，
+被插入的代码会被执行。
+本文在劫持过程中提出了利用中间代理层“proxy”的思想，
+即把插入的代码拆为两段，
+第一段为proxy，
+负责被劫持函数的堆栈和寄存器的保存和恢复，
+并调用第二段代码;
+第二段代码写成函数的形式而被proxy调用，
+函数体用于实现劫持目的，
+例如获取系统的敏感信息等。
+这种做法有效地将与劫持目的有关代码的编写从劫持技术本身中分离了出来。
+
+最后，本文实现了一个简单的插入实例，
+通过插入代码和修改指令流，
+劫持了VxWokrs下的本地文件系统dosFs。
+任何文件操作（如read，write）
+都会被插入代码所捕获，
+并将相应的信息打印到屏幕上。
+
 \end{cabstract}
 \begin{eabstract}
-Here is the Abstract in English. And this is a test sentence, just for
-a test to see how the buaathesis works. You can just ignore this.\par
-This is another pargraph.
+The paper firstly analyses some typical 
+binary injection techniques to ELF in UNIX or Linux.
+They are compared in different aspects and their features are listed.
+We also conclude the situations where they can be used. 
+We then study VxWorks 5.5 to look for a suitable approach to 
+inject codes in system image.
+
+After injecting code to system image successfully. 
+We further modified some 
+instructions of the function which we aim to hijack.
+As a result, 
+our injected codes will be executed once the function is called. 
+An intermidiate layer called proxy is used in injected codes.
+Codes are parted, in which the seconde part should be called by 
+the first part.
+The first part proxy aimed at store and renew the stack and 
+registers of the hijacked function, 
+whereas the second part needs to finish our final task,
+such as to obtain some sensitive information of the system.
+Using proxy, the injecting and hijacking job become transparet 
+to the final task. 
+
+Finally, an example, in which we hijacked dosFs file system 
+in VxWorks by injecting code and hijacking some functios, is given.
+Each file operation such read and write will be 
+detected and reported.   
+
+
+
+
+
 \end{eabstract}

