@@ -1,0 +1,60 @@
+\chapter{代码劫持方案的分析与设计}
+
+
+
+ \section{传统的代码劫持方法}
+
+  \subsection{修改ELF文件入口点}
+
+ELF文件头中包含一些有关ELF文件的重要数据结构，
+一个典型的ELF文件头如图\ref{header}所示。
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{figure/header.png}
+  \caption{ELF文件头部}
+  \label{header}
+\end{figure}
+文件头对于ELF文件的链接视图和执行视图来说
+同样重要。除了标志该文件是ELF文件及其类型之外，
+头部最重要的作用
+在于标明了以下三点：
+
+\begin{description}
+  \item [1]  程序入口点位置
+  \item [2]  节区头部表位置和节区的数量
+  \item [3]  程序头部表位置和段的数量 
+\end{description}
+
+图\ref{header}中的“Entry Point address”即为
+该ELF文件的入口点地址。
+在Linux中，当ELF文件被加载完成之后，
+CPU首先执行该地址处的第一条指令。
+因此我们只需要修改这一地址，
+就可以让系统首先跳转到我们的插入代码。
+
+执行这一修改的步骤大致如下：
+
+1、修改目标文件的Entry Point address字段为
+插入代码第一条指令的地址。
+
+2、插入代码执行一定的操作。
+
+3、插入代码使用跳转指令，
+跳回原入口点的地址。
+
+这一方法简单有效，\cite{siovio}的第一代Unix病毒
+就使用了这种办法来获取控制权。
+
+  \subsection{在函数头增加跳转}
+
+  \subsection{通过篡改动态链接数据结构}
+
+ \section{VxWorks系统劫持分析}
+
+  \subsection{VxWorks系统镜像种类}
+  \subsection{VxWorks系统启动调用流程}
+
+
+ \section{VxWorks下代码劫持方案设计}
+
+

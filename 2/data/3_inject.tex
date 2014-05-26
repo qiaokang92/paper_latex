@@ -1,0 +1,594 @@
+\chapter{VxWorks代码插入方案分析与设计}
+
+\section{关于ELF格式的讨论}
+
+对ELF格式文件进行二进制层面的修改，
+首先要对其文件格式有比较深入的了解。
+ELF的文件格式在\cite{elf1.2}中有着详尽的描述，
+在此不再对ELF文件格式的细节进行罗列，
+而是介绍一些关键的知识，
+并讨论这些知识与我们的插入工作有何关联，
+以及它们如何能决定插入的成败。
+
+\subsection{ELF文件类型} 
+
+ELF文件主要有三种类型，分别是：
+
+\begin{itemize}
+ \item 可重定位文件（Relocatable File）
+ \item 可执行文件(Executable File)
+ \item 共享目标文件(Shared Object File)
+\end{itemize}
+
+可重定位文件就是常见的.o文件，也叫目标文件。
+这类文件包含了代码和数据，
+但是其中的外部地址引用都未重定位，
+可以被与其他可重定位文件链接生成
+可执行文件或者共享目标文件。
+
+可执行文件在Linux下往往没有扩展名，
+例如/bin/ls就是典型的这一类文件。
+他们共同的特点是可以直接执行。
+但是ELF可执行文件在也分为两类：
+静态链接的和动态链接的。
+区别在于静态链接的文件所需要的库都已经被链接至
+可执行文件中。而动态链接的文件在运行时才与库链接。
+Gcc(GNU Compile Collection, GNU编译器套装)默认生成动态链接的可执行文件；通过增加--static选项，可以生成静态链接的可执行文件。
+
+共享目标文件即Linux下的.so文件，
+也常被叫做动态共享库。
+它们类似.o文件，并没有被完全链接，
+但是区别在于，
+它们用于在运行时与动态链接的可执行文件进行链接。
+
+我们的操作目标，即VxWorks系统镜像，
+可以归类为静态链接的可执行文>件。
+它的特点是已经被完全链接和重定位。
+
+\subsection{链接视图与执行视图}
+
+每一种ELF文件都有着相似的基础结构。
+ELF文件格式刚刚被生成的时候，是存储在磁盘中；
+然而它最终的用途是被加载和执行。
+这里有点类似从一个“程序”到“进程”的转化。
+当ELF存在于磁盘中时，系统以某种视角来看待它;
+然而当它被加载到主存，系统就需要以另一种视角来看待它。
+%%
+这两种不同的视角，
+就是ELF文件的链接视图和执行视图，
+如图\ref{elf-map}。
+任何ELF文件都存在链接视图，
+而执行视图存在于共享目标文件和可执行文件中。
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.55\textwidth]{figure/elf-map.png}
+  \caption{链接视图与执行视图}
+  \label{elf-map}
+\end{figure}
+
+\begin{itemize}
+  \item 链接视图
+\end{itemize}
+
+在对ELF文件进行链接的过程中，
+链接器从链接视图来看待ELF文件，
+链接器认为ELF文件被划分为一个个节区（section），
+节区中包含代码或者数据。
+链接器通过合并这些段来形成新的ELF文件。
+
+\begin{itemize}
+  \item 加载视图
+\end{itemize}
+
+
+当加载器对ELF可执行文件执行加载操作时，
+它眼中的ELF文件是被划分为了一个个段（segmentation）。
+在一个使用分页机制的系统中，
+每个段都是按照页大小（例如4KB）进行对齐的。
+加载器的任务就是把每个段的页拷贝到主存的合适位置。
+（使用虚拟存储器的系统中，加载器不拷贝数据，
+只建立虚拟内存和磁盘文件的关联，
+在此可以简单认为加载器按照段结构进行了ELF文件到主存的拷贝）
+
+ELF文件中，存在以下的数据结构，来实现链接视图和执行视图。
+（在.o文件中，不存在执行视图）
+
+\begin{itemize}
+  \item 节区与节区头部表
+\end{itemize}
+
+图\ref{sections}展示了/bin/ls程序的节区头部表的一部分。
+在链接视图中，节区用于划分文件中不同类型的数据。
+例如.text节用于存放代码，.data节用于存放数据等。
+链接两个目标文件的的其中一步，就是把
+节区头表为是所有节区的一个索引，
+通过解析节区头表可以找到文件的所有节区。
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{figure/sections.png}
+  \caption{节区头部表}
+  \label{sections}
+\end{figure}
+%\begin{itemize}
+ % \item 段和程序头部表
+%\end{itemize}
+
+\begin{itemize}
+  \item 段和程序头部表
+\end{itemize}
+
+图\ref{programs}是/bin/ls的程序头部表。
+段是执行视图中的对ELF文件的划分，
+ELF文件被加载和执行的就是一个个段。
+一般来说，每个节区映射到唯一一个段，而一个段包含不同的节区。
+段没有名字，但有类型和属性：
+类型一般指明该段是否需要加载至内存，
+例如需要加载器加载到主存中的段的类型为“LOAD”；
+而段的属性则表明了该段能否被读/写/执行。
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{figure/programs.png}
+  \caption{程序头部表}
+  \label{programs}
+\end{figure}
+在一个典型的Linux可执行文件中，
+第一个LOAD类型的段一般具有可读和可执行的属性，
+该段对应的节区为所有含有代码的节区，例如.init节、.text节和.finit节。
+
+与节区头部表类似，程序头部表是所有段的一个索引。
+程序头部表还指明了每个段所包含的节区。
+
+\section{ELF插入技术分析}
+
+\subsection{利用nop指令串插入代码}
+\label{nopinjection}
+
+首先介绍一种最简单的代码插入方式。
+一本优秀的反汇编教材\cite{heike}中
+讲述了利用nop串向ELF文件插入代码的方法。
+由于gcc编译器在生成ELF文件时，
+会对函数的起始地址按照0x10进行对齐。
+多余的空间会使用nop指令（操作码为0x90）进行填充。
+由于地址对齐而留下的nop指令串便可以供我们随意使用。
+
+这些可用的nop指令串有这样两个条件：
+在nop串第一个nop指令的前面必须是ret或者jmp指令，
+而且最后一个nop串之后的地址能够被10h整除。
+代码\ref{nop}是/bin/ls文件反汇编之后的一部分代码，
+代码中从地址805ac43h开始，到805ac4fh结束的nop指令串
+满足上述的两个条件
+（前面紧挨的指令为jmp，nop串结束后的地址为805ac50h）。
+因此这些nop都可以被改写，
+而不影响程序运行。
+
+\begin{lstlisting}[
+  language={[x86masm]Assembler},
+  caption={/bin/ls中存在的nop指令串},
+  label={nop},
+]
+805ac3e:       5f                  pop    edi
+805ac3f:       5d                  pop    ebp
+805ac40:       c3                  ret
+805ac41:       eb 0d               jmp    805ac50<__sprintf_chk@plt+0x10f90>
+805ac43:       90                  nop
+805ac44:       90                  nop
+805ac45:       90                  nop
+805ac46:       90                  nop
+805ac47:       90                  nop
+805ac48:       90                  nop
+805ac49:       90                  nop
+805ac4a:       90                  nop
+805ac4b:       90                  nop
+805ac4c:       90                  nop
+805ac4d:       90                  nop
+805ac4e:       90                  nop
+805ac4f:       90                  nop
+805ac50:       f3 c3               repz ret
+\end{lstlisting}
+
+虽然这样的nop指令串在/bin/ls这样的文件中有很多，
+但每一段都不是太长，容不下很多代码。
+一个最简单的办法就是，
+在每个nop串快要用完的时候，使用jmp或其他指令，
+跳转到下一个nop串的开始处。
+这样我们就可以利用几乎所有的nop指令串
+（除非有的实在太短，以至于写不下jmp指令）。
+\cite{heike}中给出了一个简单的手动修改的示例，劫持一个可执行文件，
+在运行它时先打印字符串“hello”。
+示例的工作可以归结为以下几个步骤：
+
+（1）修改ELF文件入口点处的两条指令，
+替换为jmp指令，跳转地址为第一个nop指令串。
+
+（2）在nop串中写入使用系统调用
+打印“hello\textbackslash n”的汇编代码。
+如果一个nop串不足，则跳转后继续使用下一个nop串。
+
+（3）打印代码的最后，加入ELF入口点被修改的两条指令。
+
+（4）使用jmp跳转回入口点处的第三条指令。
+
+修改完成后，当我们再次在终端中执行该可执行文件时，
+终端中会首先打印出一行“hello”，接着才是它原先的工作。
+
+这种修改方式虽然原理简单，
+但若对较大的文件注入大量的代码，
+手工操作的工作量会很大。
+最好的办法是使用\cite{infelf}提供的infelf工具，
+该工具把使用nop进行插入的原理流程化，
+从而帮助我们自动完成插入。
+
+Infelf工具在流程上与前面所述差异不大，
+但是通过它可以劫持程序执行流的任意的位置，
+比如任意一个函数的入口，而不仅限于入口点。
+该工具的出现说明向nop串插入代码，
+完全可以成为一种常规的插入方式。
+
+然而，如果要插入大量的代码，
+程序中仅有的一点nop指令串能够用吗？
+我们做一个简单的统计，来看看一个ELF可执行文件中，
+大概能留下多少可供使用的nop指令串。
+我们选取了一些典型的ELF文件，包括一个最简单的C语言“hello,world!”程序，
+若干/bin目录下的实用程序和我们的目标VxWorks镜像。
+统计结果如表\ref{nopbytes}所示。
+
+\begin{table}
+  \centering
+  \caption{典型ELF文件中的nop串占据的空间}
+  \label{nopbytes}
+  \begin{tabular}{l|l|l}
+     \hline
+     ELF文件       & 文件大小（字节）& nop串大小（字节） \\ \hline
+ “hello,world!”程序  & 7339           & 30                 \\ \hline
+     /bin/ls      & 108708          & 921                \\ \hline
+     /bin/rm      & 303484         & 1653                \\ \hline  
+     /bin/bash    & 924892        & 13723              \\ \hline
+     VxWorks系统镜像 & 1337184        & 21114              \\ \hline
+  \end{tabular}
+\end{table}  
+
+由此可见，随着ELF文件体积的增大，
+可用的nop串空间也几乎在正比例扩张，
+二者的比例大概维持在100:1的数量级。
+除了在最简单的“hello,world!”程序中几乎什么都插不下之外，
+具有一些实用功能的应用程序都有着比较可观的空间。
+试想一下，假若/bin/bash中13KB的nop串被全部塞满恶意代码，
+完全可以对系统产生严重的打击。
+
+\subsection{在代码段的最后分区插入代码}
+
+Silvio Cesare由于在1998年提出的最原始的UNIX病毒模型\upcite{silvio}，
+而曾被称为“ELF大师（ELF master）”。
+在这一病毒模型中，病毒在感染其他文件时，
+采取了一种不同的方式。
+具体来说是在第一个可加载段（俗称的代码段）最后一节的最后插入代码。
+这一方案具有很大的通用性，
+因为不论ELF文件有多大，
+两个加载段之间都有大概4KB的地址空间供我们插入。
+即使总共才只有7KB的“hello,world!”程序也不例外，如图\ref{hello}所示。
+第一个LOAD段的结束地址为0x80485b4(0x8048000+0x5b4),
+而第二个LOAD段从0x8049f08才开始，
+两个段之间有多达0x1954的空闲地址空间。
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{figure/helloprograms.png}
+  \caption{hello程序的程序头部表}
+  \label{hello}
+\end{figure}
+%%
+
+之所以会出现这么大的空闲地址空间，
+来源于Linux（包括一些其他的UNIX）的特殊的段加载机制。
+因为如果完全按照0x1000来对齐段的起始地址，
+将会对物理内存产生巨大的浪费。
+从图\ref{hello}可以看出，
+hello程序的第一个段只有0x5b4字节大小，
+让它完全占有一个物理段，那就会产生0x1000-0x5b4=0xac4字节的浪费，
+空间利用率只有35.6\%。
+
+
+针对这种浪费，Linux的做法是通过分配更多的虚拟内存来
+换取物理内存的节约。
+具体做法是把可执行文件从偏移0处开始，
+按照页大小进行划分，
+划分得到的每个页面作为一个物理页面加载。
+这样的问题在于有的物理页面会包含两个ELF段，
+这时只需要把这样的物理段映射两次到虚拟地址空间即可。
+如图\ref{linuxmap}，假设一个ELF文件有三个段需要加载，
+在使用这种段合并机制的情况下，
+三个段之间会产生两段空余的地址空间。
+
+%%%%%%
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figure/linuxmap.eps}
+  \caption{Linux加载机制中的段合并}
+  \label{linuxmap}
+\end{figure}
+
+
+
+显然，在物理地址空间中，页面利用率大幅提高，
+但在虚拟地址空间中留下了尺寸不小的碎片，
+图\ref{linuxmap}的情况是碎片大概1页大小，
+但在有些gcc的版本中，这一大小甚至接近两个页。
+这一空间便可以被我们用于插入代码。
+要注意的是，虽然原理上，
+数据段最后的剩余空间同样可以利用，
+但这需要修改数据段的可写属性，
+不如插在代码段之后更为便捷。
+因此在\cite{silvio}的算法中，
+代码的插入位置是在代码段之后。
+
+下面简要描述了这一插入算法：
+
+1、修改ELF文件头中的entrypoint字段，指向即将插入代码的位置
+（代码段offset+filesz）
+
+2、找到ELF中的第一个可加载段（代码段），
+将该段的filez字段和memsz字段增加要插入代码的大小。
+
+3、对于所有在代码段之后的段，将其offset增加一页（4KB）的大小。
+
+4、对于代码段的最后一个节区，将其len字段增加插入代码长度大小。
+
+5、对于在代码段之后的所有节区，将其len字段增加一页（4KB）的大小。
+
+6、将插入代码的长度填充到1页（4KB），然后拷贝到预定的插入代码的位置。
+
+7、修改的插入代码，插入一条jmp指令，跳转回原先的entrypoint。
+
+这一算法提出之后，大量的针对ELF乃至Linux内核的研究
+都借鉴了其插入代码的思路，
+如\cite{simple,prototype,subversive,cerberus,sharelib}。等
+
+在这一算法的基础上，
+我实现和完善了这一方法的python版本
+（见附录\ref{python}）。
+并增加了一些自定义的功能。下面借助一个例子来进一步说明其原理。
+
+这个例子的目标是在一个hello程序中插入代码，
+插入代码的任务则是借助Linux的系统调用，
+打印一行字符串“foo”。
+插入成功的标志是运行hello程序时，先打印一行“foo”，再打印一行“hello”。
+
+图\ref{main1}和\ref{main2}分别展示了在插入代码前后的程序头表的变化。
+我们可以很容易在这里发现一些上面的算法所描述的改变，
+例如第一个LOAD段的长度被增加了0x26,
+而从第二个LOAD段开始，所有的段的偏移量都增加了0x1000，即4K等。
+类似地，节区头部表中的一些数据结构也被修改，在此就不再赘述了。
+
+\begin{figure}[h!]
+  \label{main}
+   \centering
+  \begin{tabular}{cc}
+    \subfigure[插入前]{
+      \label{main1}
+      \includegraphics[width=0.6\textwidth]{figure/main.png}
+     }  \\
+    \subfigure[插入后]
+     {
+        \label{main2}
+      \includegraphics[width=0.6\textwidth]{figure/main2.png}
+     }
+    \end{tabular}
+  \caption{可执行文件插入代码前后的程序头表对比}
+\end{figure}
+          
+图\ref{dia}展示了插入的代码如何通过修改程序入口点
+对程序原有的正常执行流进行篡改。
+在程序未被修改前，
+ELF头的入口点指向代码段的起始位置，如图\ref{dia1}。
+通过修改ELF头的入口点，
+使它指向我们插入代码的位置；
+在插入代码的最后，跳转回原入口点的位置，
+以保证程序的正常执行，如图\ref{dia2}。
+
+\begin{figure}[h!]
+   \centering
+  \begin{tabular}{cc}
+    \subfigure[插入前]{
+      \label{dia1}
+      \includegraphics[width=0.3\textwidth]{figure/dia1.png}
+     }  
+    \hspace{4em}
+    \subfigure[插入后]
+     {
+        \label{dia2}
+      \includegraphics[width=0.3\textwidth]{figure/dia2.png}
+     }
+    \end{tabular}
+  \caption{可执行文件代码插入前后执行流程对比}
+  \label{dia}
+\end{figure}
+
+
+\subsection{在代码段之前插入代码}
+
+虽然利用代码段最后可能空余的地址空间来插入代码，
+已经成为了一种比较成熟的手段，
+但这种方法的局限性仍然是不可忽视的。
+最重要的一点就是其插入的代码量存在限制。
+一般来说，如果插入代码量最好保证在1KB之内，
+一旦超过2KB，几乎是不可能成功的。
+
+然而，一个高效而便捷的工具ELFsh\upcite{elfsh}
+提供了一种新的插入思路，
+即把代码插入至代码段之前。
+我们知道，对于一个运行在IA32上的Linux系统来说，
+一个进程的地址空间中，代码段总是开始于0x8048000，
+然而从0到0x8047fff这段空间一般不被使用。
+该工具的思路就是把需要执行的代码插入至
+这一段未被使用的地址空间中。
+
+ELFsh工具功能强大，
+它以一个.o文件和一个可执行文件作为输入。
+不但能够讲.o中的可执行代码插入至可执行文件中，
+还能插入.o文件携带的数据节、bss节和符号表。
+并能够对插入代码的所有重定位入口进行重定位。
+
+下面简要说明其插入流程：
+
+1、将.o文件的.bss节插入合并到可执行文件的.bss节中。
+
+2、遍历.o文件的所有节区，判断是否具有以下条件
+\begin{itemize}
+  \item 存在标志位（说明该节区需要被加载到进程空间中）
+  \item 在文件中占据空间（排除.bss节区）
+  \item 节区类型为值为SHT\_PROGBITS，说明该节区为程序节或者代码节。
+\end{itemize}
+  
+对于同时满足这些条件的节区，再判断节区是否具有可写属性，
+对于具有可写属性的节区（数据节），插入到.bss节之后；
+其他节区插入到第一个节区之前。
+
+3、把.o文件的符号表合并至可执行文件中。
+
+4、对于.o文件中的所有节区，如果已经被
+插入到了可执行文件中，并且需要重定位，
+则对其进行重定位。
+
+下面演示ELFsh工具的效果。
+我们的目标是劫持/bin目录下的ls程序。
+我们首先编写一个简单的程序，
+源代码见\ref{myprintf.c}，
+然后把它编译为myprintf.o即可。
+我们的目标是把它注入到ls程序中。
+每次运行ls，都会先打印一行“hi, you're hijacked!”。
+
+\begin{lstlisting}[
+  language={C},
+  caption={myprintf.c源代码},
+  label={myprintf.c},
+]
+#include<stdio.h>
+void myprintf(){
+    printf("hi, you're hijacked!");
+}
+\end{lstlisting}
+
+图\ref{fig-matrix}反映了ls程序被插入前后的节头表（只展示了前20个）
+和程序头表的变化。
+由图可以发现，在ELFsh向可执行文件注入了9个节区，
+并都位于可执行文件的第一个节区，即.interp节之前。
+（此外还进行了符号表和.bss节的合并，这里看不出来）。
+程序头表方面，可以发现段的数目并没有变化，
+但是第一个段的起始地址由0x8048000提前到了0x803c000，
+这也说明注入的代码使用了0x8048000之前的地址空间。
+此外，位于后面的段在文件中的偏移也相应地增加了0xc000，
+说明我们在.interp段之前总共插入了0xc000字节的代码，
+即12个页，
+试想一下，如果使用nop插入或者插入到段间的空闲地址，
+这几乎是不可能完成的任务。
+
+\begin{figure}[h!]
+    \centering
+    \begin{tabular}{cc}
+        \subfigure[插入前节头表]{
+            \label{fig-matrix-a}
+            \includegraphics[width=.46\textwidth]{figure/sht1.png}
+        } \hspace{2em} &
+        \subfigure[插入前程序头表]{
+            \label{fig-matrix-b}
+            \includegraphics[width=.38\textwidth]{figure/pht1.png}
+        } \\
+        \subfigure[插入后节头表]{
+            \label{fig-matrix-c}
+            \includegraphics[width=.46\textwidth]{figure/sht2.png}
+        } \hspace{2em} &
+        \subfigure[插入后程序头表]{
+            \label{fig-matrix-d}
+            \includegraphics[width=.38\textwidth]{figure/pht2.png}
+        }\\
+    \end{tabular}
+    \caption{插入前后ls程序头表和节头表变化}
+    \label{fig-matrix}
+\end{figure}
+
+插入一旦完成，劫持工作就会很容易进行。
+我们只需要手动修改ELF文件的入口点，
+指向myprintf函数的地址，然后手动修改该函数的最后几条指令，
+跳回原入口点即可
+（回想一下，函数结尾往往有nop指令串，因此这很容易实现）。
+
+最后的达到的效果如图\ref{ls}所示。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=.6\textwidth]{figure/ls.png}
+    \caption{修改后的ls程序运行结果}
+    \label{ls}
+\end{figure}
+
+\section{VxWorks关于代码插入的讨论}
+
+\subsection{VxWorks运行时内存布局}
+
+上一条简单介绍了VxWorks可加载型镜像的启动顺序，
+并展示了一个简单的、通用的
+内存布局。
+然而针对特定的体系结构，内存布局有很大的区别。
+
+回顾在\ref{twoqs}中提到的关于ELF文件插入的两个问题：
+文件空间与地址空间。
+要寻找合适的空闲的地址空间，
+我们需要熟悉VxWorks运行中的详细内存布局。
+
+图\ref{ram}是在x86硬件平台下的VxWorsk内存布局的一个简略版本。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.68\textwidth]{figure/ram.eps}
+    \caption{x86下的VxWorks系统内存布局}
+    \label{ram}
+\end{figure}
+
+我们的目标是寻找空闲的地址空间，
+使得代码能够映射到这一块地址并被执行。
+然而，从图中不难看出：
+在VxWorks系统镜像的低地址和高地址两个方向，
+均有明确的定义和用途。
+其中，RAM\_LOW\_ADRS之前的低端内存区，
+被用作初始化堆栈。
+系统的初始化流程借助这一区域实现函数调用。
+而FREE\_RAM\_ADRS之后的地址，
+用于WDB内存池。
+这两段地址皆有明确的用途，
+因此，利用这两段地址空间注入代码是不可行的。
+这也就意味着，
+我们必须在VxWorks系统映像占据的内存区域中
+寻找地址空间进行插入。
+
+\subsection{VxWorks镜像文件格式}
+
+下面我们具体地来看一下VxWorks系统映像文件。
+图\ref{shtandpht}展示了映像文件的
+节头表和程序头表，以及他们的映射关系。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.68\textwidth]{figure/shtandpht.png}
+    \caption{VxWorks系统映像文件的节头表和程序头表}
+    \label{shtandpht}
+\end{figure}
+
+该文件的布局非常简单，
+只有一个可加载段，对应三个节，
+分别是text节，data节和bss节。
+一般来说，ELF文件中的代码和数据由于分别具有不同的属性
+（例如代码节不可写，数据节不可执行），
+这两种节会被映射到不同的段来映射，
+从而映射到不同的页面，
+并在页表中赋予他们不同的属性。
+然而VxWorks的做法比较特殊，
+代码和数据节映射到一个段，
+这也就意味着该段必须同时具有可读可写和可执行三类属性。
+
+\section{VxWorks代码插入方案设计}
+
+
