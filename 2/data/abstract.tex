@@ -1,61 +1,75 @@
 % !Mode:: "TeX:UTF-8"
 \begin{cabstract}
 %%%
-Unix/Linux下针对可执行链接文件的代码插入技术
-已经比较成熟。
-%%%
-在此基础上，
-考察这些插入技术在VxWorks 5.5系统镜像中
-实施的可能性。
-进而选择合适的插入技术,
-实现对于VxWorks 5.5操作系统映像文件的二进制插入操作。
 
+本文研究如何在VxWorks系统镜像
+文件中插入代码，
+并通过修改指令流劫持特定的函数，
+从而在该函数被调用时执行插入代码。
+二进制插入和劫持操作可为VxWorks平台下的
+系统测试与调试、攻击防范等提供研究基础。
 
-在插入代码的基础上，
-通过修改镜像文件中的指令执行流，
-劫持某个特定的函数，
-从而当该函数被调用时，
-被插入的代码会被执行。
-本文在劫持过程中提出了利用中间代理层“proxy”的思想，
-即把插入的代码拆为两段，
-第一段为proxy，
-负责被劫持函数的堆栈和寄存器的保存和恢复，
-并调用第二段代码;
-第二段代码写成函数的形式而被proxy调用，
-函数体用于实现劫持目的，
-例如获取系统的敏感信息等。
-这种做法有效地将与劫持目的有关代码的编写从劫持技术本身中分离了出来。
+%%代码插入意味着通过将二进制机器码注入到可执行文件中，
+%%使这段代码随着程序执行被映射到内存空间。
+%%劫持则是指在程序合适的位置插入跳转指令，
+%%从而在特定的时机获取控制权，使插入代码被执行。
+代码插入是实施劫持的前提；
+也只有通过合适的劫持操作，
+插入代码才能得到运行。
+针对Linux等平台的ELF文件，
+存在若干成熟的插入技术。
+然而由于VxWorks的若干特性，
+确定唯一适合VxWorks系统的代码插入方案为
+使用nop指令串进行插入。
+为了方便大规模插入代码，编写了自动化工具。
 
-最后，本文实现了一个简单的插入实例，
-通过插入代码和修改指令流，
-劫持了VxWokrs下的本地文件系统dosFs。
-任何文件操作（如read，write）
-都会被插入代码所捕获，
-并将相应的信息打印到屏幕上。
+程序劫持技术中，主要有修改入口点
+和修改函数头两种方法。
+分析认为修改入口点不适用于对VxWorks的劫持，
+而修改函数头的方法只能劫持函数入口。
+本文提出了一种可以劫持函数体任意位置的方法。
+即通过一段中间代码来间接调用插入代码，
+并在中间代码中进行寄存器的保存和恢复工作。
+这种方法不但对劫持入口没有限制，
+而且有效地分离了劫持操作与劫持函数的编写。
+
+利用上述的插入和劫持方案，
+实现了一个实例mini-notify。
+通过对VxWorks二进制镜像进行插入和劫持修改，
+可以实现类似Linux内核中
+inotify的文件系统监控功能。
+实验证实包含mini-notify的系统可以
+截获所有的针对本地文件系统的文件操作。
 
 \end{cabstract}
 \begin{eabstract}
-The paper firstly analyses some typical 
-binary injection techniques to ELF in UNIX or Linux.
-They are compared in different aspects and their features are listed.
-We also conclude the situations where they can be used. 
-We then study VxWorks 5.5 to look for a suitable approach to 
-inject codes in system image.
-
-After injecting code to system image successfully. 
-We further modified some 
-instructions of the function which we aim to hijack.
-As a result, 
-our injected codes will be executed once the function is called. 
-An intermidiate layer called proxy is used in injected codes.
-Codes are parted, in which the seconde part should be called by 
-the first part.
-The first part proxy aimed at store and renew the stack and 
-registers of the hijacked function, 
-whereas the second part needs to finish our final task,
-such as to obtain some sensitive information of the system.
-Using proxy, the injecting and hijacking job become transparet 
-to the final task. 
+The paper aims at injecting codes to VxWorks image file 
+and hijacking given functions of VxWorks by modifying the 
+instructions. 
+Injecting and hijacking can be used in closed-source software 
+debugging, intrusion detection and intrusion prevention.
+ 
+The final goal is to hijack instruction stream
+ which is based on injecting codes.
+Many present ways to inject code in ELF on Linux 
+can be used potentially.
+However, only one way, injecting code into nops, 
+is available as a result of the features of VxWorks. 
+A tool is written to help inject.
+ 
+As for hijacking, exsiting ways usually modify
+the entrypoint of ELF or the starting 
+instructions of a function.
+To modify the entrypoint doesn't apply to VxWorks image.
+On the other hand, to modify the 
+starting instructions means the hijack point 
+cannot be anything but the entrance of the function.
+A new method is proposed which hijack functions 
+using some medial codes, which calls the 
+injected code and help store and restore 
+the registers. 
+This new method helps hijack any position inside a 
+function and write more powerful injected code.
 
 Finally, an example, in which we hijacked dosFs file system 
 in VxWorks by injecting code and hijacking some functios, is given.
