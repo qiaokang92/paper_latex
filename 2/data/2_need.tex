@@ -56,7 +56,7 @@ Gcc(GNU Compile Collection, GNU编译器套装)默认生成动态链接的可执
 它们用于在运行时与动态链接的可执行文件进行链接。
 
 我们的操作目标，即VxWorks系统镜像，
-可以归类为静态链接的可执行文>件。
+可以归类为静态链接的可执行文件。
 它的特点是已经被完全链接和重定位。
 
 \subsection{链接视图与执行视图}
@@ -119,15 +119,54 @@ ELF文件中，存在以下的数据结构，来实现链接视图和执行视�
 节区头表为是所有节区的一个索引，
 通过解析节区头表可以找到文件的所有节区。
 
+%%\begin{lstlisting}[
+%% language={C},
+%% label={sections},
+%%caption={节区头部表},
+%%xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+%%]
+%%Section Headers:
+%%  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+%%  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+%%  [ 1] .interp           PROGBITS        08048154 000154 000013 00   A  0   0  1
+%%  [ 2] .note.ABI-tag     NOTE            08048168 000168 000020 00   A  0   0  4
+%%  [ 3] .note.gnu.build-i NOTE            08048188 000188 000024 00   A  0   0  4
+%%  [ 4] .gnu.hash         GNU_HASH        080481ac 0001ac 00006c 04   A  5   0  4
+%%  [ 5] .dynsym           DYNSYM          08048218 000218 000820 10   A  6   1  4
+%%  [ 6] .dynstr           STRTAB          08048a38 000a38 0005d5 00   A  0   0  1
+%%  [ 7] .gnu.version      VERSYM          0804900e 00100e 000104 02   A  5   0  2
+%%  [ 8] .gnu.version_r    VERNEED         08049114 001114 0000d0 00   A  6   3  4
+%%  [ 9] .rel.dyn          REL             080491e4 0011e4 000038 08   A  5   0  4
+%%  [10] .rel.plt          REL             0804921c 00121c 000380 08   A  5  12  4
+%%  [11] .init             PROGBITS        0804959c 00159c 000023 00  AX  0   0  4
+%%  [12] .plt              PROGBITS        080495c0 0015c0 000710 04  AX  0   0 16
+%%  [13] .text             PROGBITS        08049cd0 001cd0 010fcc 00  AX  0   0 16
+%%  [14] .fini             PROGBITS        0805ac9c 012c9c 000014 00  AX  0   0  4
+%%  [15] .rodata           PROGBITS        0805acc0 012cc0 0040c8 00   A  0   0 32
+%%  [16] .eh_frame_hdr     PROGBITS        0805ed88 016d88 00072c 00   A  0   0  4
+%%  [17] .eh_frame         PROGBITS        0805f4b4 0174b4 0028b8 00   A  0   0  4
+%%  [18] .init_array       INIT_ARRAY      08062eec 019eec 000004 00  WA  0   0  4
+%%  [19] .fini_array       FINI_ARRAY      08062ef0 019ef0 000004 00  WA  0   0  4
+%%  [20] .jcr              PROGBITS        08062ef4 019ef4 000004 00  WA  0   0  4
+%%  [21] .dynamic          DYNAMIC         08062ef8 019ef8 000100 08  WA  6   0  4
+%%  [22] .got              PROGBITS        08062ff8 019ff8 000008 04  WA  0   0  4
+%%  [23] .got.plt          PROGBITS        08063000 01a000 0001cc 04  WA  0   0  4
+%%  [24] .data             PROGBITS        080631e0 01a1e0 000160 00  WA  0   0 32
+%%  [25] .bss              NOBITS          08063340 01a340 000c64 00  WA  0   0 32
+%%  [26] .gnu_debuglink    PROGBITS        00000000 01a340 000008 00      0   0  1
+%%  [27] .shstrtab         STRTAB          00000000 01a348 0000fc 00      0   0  1
+%%Key to Flags:
+%%  W (write), A (alloc), X (execute), M (merge), S (strings)
+%%  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+%%  O (extra OS processing required) o (OS specific), p (processor specific)
+%%\end{lstlisting}
+
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.5\textwidth]{figure/sections.png}
+  \includegraphics[width=0.85\textwidth]{figure/sections.png}
   \caption{节区头部表}
   \label{sections}
 \end{figure}
-%\begin{itemize}
- % \item 段和程序头部表
-%\end{itemize}
 
 \begin{itemize}
   \item 段和程序头部表
@@ -142,12 +181,34 @@ ELF文件被加载和执行的就是一个个段。
 例如需要加载器加载到主存中的段的类型为“LOAD”；
 而段的属性则表明了该段能否被读/写/执行。
 
+%%\begin{lstlisting}[
+%%caption={程序头部表},
+%%language={C},
+%% label={programs},
+%%xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+%%]
+%%Program Headers:
+%%  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+%%  PHDR           0x000034 0x08048034 0x08048034 0x00120 0x00120 R E 0x4
+%%  INTERP         0x000154 0x08048154 0x08048154 0x00013 0x00013 R   0x1
+%%      [Requesting program interpreter: /lib/ld-linux.so.2]
+%%  LOAD           0x000000 0x08048000 0x08048000 0x19d6c 0x19d6c R E 0x1000
+%%  LOAD           0x019eec 0x08062eec 0x08062eec 0x00454 0x010b8 RW  0x1000
+%%  DYNAMIC        0x019ef8 0x08062ef8 0x08062ef8 0x00100 0x00100 RW  0x4
+%%  NOTE           0x000168 0x08048168 0x08048168 0x00044 0x00044 R   0x4
+%%  GNU_EH_FRAME   0x016d88 0x0805ed88 0x0805ed88 0x0072c 0x0072c R   0x4
+%%  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x4
+%%  GNU_RELRO      0x019eec 0x08062eec 0x08062eec 0x00114 0x00114 R   0x1
+%%}
+%%\end{lstlisting}
+
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.5\textwidth]{figure/programs.png}
+  \includegraphics[width=0.85\textwidth]{figure/programs.png}
   \caption{程序头部表}
   \label{programs}
 \end{figure}
+
 在一个典型的Linux可执行文件中，
 第一个LOAD类型的段一般具有可读和可执行的属性，
 该段对应的节区为所有含有代码的节区，例如.init节、.text节和.finit节。
@@ -347,7 +408,7 @@ Silvio Cesare由于在1998年提出的最原始的UNIX病毒模型\upcite{silvio
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.5\textwidth]{figure/helloprograms.png}
+  \includegraphics[width=0.85\textwidth]{figure/helloprograms.png}
   \caption{hello程序的程序头部表}
   \label{hello}
 \end{figure}
@@ -377,7 +438,7 @@ hello程序的第一个段只有0x5b4字节大小，
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.8\textwidth]{figure/linuxmap.eps}
+  \includegraphics[width=0.65\textwidth]{figure/linuxmap.eps}
   \caption{Linux加载机制中的段合并}
   \label{linuxmap}
 \end{figure}
@@ -433,12 +494,12 @@ hello程序的第一个段只有0x5b4字节大小，
   \begin{tabular}{cc}
     \subfigure[插入前]{
       \label{main1}
-      \includegraphics[width=0.6\textwidth]{figure/main.png}
+      \includegraphics[width=0.85\textwidth]{figure/main.png}
      }  \\
     \subfigure[插入后]
      {
         \label{main2}
-      \includegraphics[width=0.6\textwidth]{figure/main2.png}
+      \includegraphics[width=0.85\textwidth]{figure/main2.png}
      }
     \end{tabular}
   \caption{可执行文件插入代码前后的程序头表对比}
@@ -512,7 +573,7 @@ void myprintf(){
 }
 \end{lstlisting}
 
-图\ref{fig-matrix}反映了ls程序被插入前后的节头表（只展示了前20个）
+图\ref{111}和\ref{222}反映了ls程序被插入前后的节头表（只展示了前20个）
 和程序头表的变化。
 由图可以发现，在ELFsh向可执行文件注入了9个节区，
 并都位于可执行文件的第一个节区，即.interp节之前。
@@ -526,28 +587,38 @@ void myprintf(){
 试想一下，如果使用nop插入或者插入到段间的空闲地址，
 这几乎是不可能完成的任务。
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
     \begin{tabular}{cc}
         \subfigure[插入前节头表]{
             \label{fig-matrix-a}
-            \includegraphics[width=.46\textwidth]{figure/sht1.png}
-        } \hspace{2em} &
+            \includegraphics[width=.75\textwidth]{figure/sht1.png}
+        } \\
         \subfigure[插入前程序头表]{
             \label{fig-matrix-b}
-            \includegraphics[width=.38\textwidth]{figure/pht1.png}
-        } \\
+            \includegraphics[width=.75\textwidth]{figure/pht1.png}
+        }
+       \end{tabular}
+       \caption{插入前节头表与程序头表}
+       \label{111}
+\end{figure}
+
+
+
+\begin{figure}[!ht]
+       \centering
+       \begin{tabular}{cc} 
         \subfigure[插入后节头表]{
             \label{fig-matrix-c}
-            \includegraphics[width=.46\textwidth]{figure/sht2.png}
-        } \hspace{2em} &
+            \includegraphics[width=.74\textwidth]{figure/sht2.png}
+        } \\
         \subfigure[插入后程序头表]{
             \label{fig-matrix-d}
-            \includegraphics[width=.38\textwidth]{figure/pht2.png}
+            \includegraphics[width=.74\textwidth]{figure/pht2.png}
         }\\
     \end{tabular}
-    \caption{插入前后ls程序头表和节头表变化}
-    \label{fig-matrix}
+    \caption{插入后程序头表和节头表}
+    \label{222}
 \end{figure}
 
 
@@ -565,9 +636,9 @@ void myprintf(){
 
 ELF文件头中包含一些有关ELF文件的重要数据结构，
 一个典型的ELF文件头如图\ref{header}所示。
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
-  \includegraphics[width=0.5\textwidth]{figure/header.png}
+  \includegraphics[width=0.75\textwidth]{figure/header.png}
   \caption{ELF文件头部}
   \label{header}
 \end{figure}
@@ -613,15 +684,15 @@ ELF头的入口点指向代码段的起始位置，如图\ref{dia1}。
 \begin{figure}[h!]
    \centering
   \begin{tabular}{cc}
-    \subfigure[插入前]{
+    \subfigure[]{
       \label{dia1}
-      \includegraphics[width=0.3\textwidth]{figure/dia1.png}
+      \includegraphics[width=0.27\textwidth]{figure/dia1.eps}
      }  
     \hspace{4em}
-    \subfigure[插入后]
+    \subfigure[]
      {
         \label{dia2}
-      \includegraphics[width=0.3\textwidth]{figure/dia2.png}
+      \includegraphics[width=0.3\textwidth]{figure/dia2.eps}
      }
     \end{tabular}
   \caption{可执行文件代码插入前后执行流程对比}
@@ -638,7 +709,7 @@ ELF头的入口点指向代码段的起始位置，如图\ref{dia1}。
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=.6\textwidth]{figure/ls.png}
+    \includegraphics[width=.85\textwidth]{figure/ls.png}
     \caption{修改后的ls程序运行结果}
     \label{ls}
 \end{figure}
@@ -742,11 +813,9 @@ ELF中文件关于动态链接的细节，
 动态链接的ELF可执行文件中，
 所有对于外部库函数的调用，都是通过
 一个got数据结构和一个段plt代码来实现的。
-其大概的跳转流程如图\ref{got1}。
-劫持的原理如图\ref{got2}所示。
 
 
-为了实现图\ref{got2}所示的劫持工作，
+为了实现对外部函数引用的劫持工作，
 需要我们插入两段代码：
 A段在函数入口点处执行，作用是帮助我们修改got，
 定位到插入库函数的位置。

@@ -150,10 +150,9 @@ RAM中的RAM\_HIGH\_ADRS处。
 ]
 push ebp
 mov ebp, esp
-sub esp, ??h            ;函数体开头的三条指令，保存ebp，构建栈帧，分配空间。
+sub esp, ??h      ;函数体开头的三条指令，保存ebp，构建栈帧，分配空间。
 
-……
-……                      ;函数体中间部分。
+;函数体中间部分。
 
 mov esp,ebp
 pop ebp
