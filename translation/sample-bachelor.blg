@@ -1,0 +1,162 @@
+This is BibTeX, Version 0.99d (TeX Live 2012/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: sample-bachelor.aux
+The style file: buaathesis.bst
+A level-1 auxiliary file: data/com_info.aux
+A level-1 auxiliary file: data/bachelor/bachelor_info.aux
+A level-1 auxiliary file: data/abstract.aux
+A level-1 auxiliary file: data/1_intro.aux
+A level-1 auxiliary file: data/2_need.aux
+A level-1 auxiliary file: data/3_inject.aux
+A level-1 auxiliary file: data/4_hijack.aux
+A level-1 auxiliary file: data/5_mini_notify.aux
+A level-1 auxiliary file: data/bachelor/conclusion.aux
+A level-1 auxiliary file: data/reference.aux
+A level-1 auxiliary file: data/appendix1-faq.aux
+A level-1 auxiliary file: data/appendix2-contactus.aux
+new.block is an unknown function---line 74 of file buaathesis.bst
+remove.dots is an unknown function---line 521 of file buaathesis.bst
+remove.dots is an unknown function---line 566 of file buaathesis.bst
+format.pages is an unknown function---line 1120 of file buaathesis.bst
+format.pages is an unknown function---line 1151 of file buaathesis.bst
+format.pages is an unknown function---line 1160 of file buaathesis.bst
+format.pages is an unknown function---line 1190 of file buaathesis.bst
+format.pages is an unknown function---line 1199 of file buaathesis.bst
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+ouput is an unknown function---line 2021 of file buaathesis.bst
+ouput is an unknown function---line 2025 of file buaathesis.bst
+ouput is an unknown function---line 2059 of file buaathesis.bst
+ouput is an unknown function---line 2062 of file buaathesis.bst
+format.conference.title is an unknown function---line 2580 of file buaathesis.bst
+format.cconference.title is an unknown function---line 2615 of file buaathesis.bst
+Database file #1: data/bibs.bib
+Warning--entry type for "silvio" isn't style-file defined
+--line 25 of file data/bibs.bib
+Warning--entry type for "simple" isn't style-file defined
+--line 55 of file data/bibs.bib
+Warning--entry type for "modern" isn't style-file defined
+--line 97 of file data/bibs.bib
+Warning--entry type for "subversive" isn't style-file defined
+--line 111 of file data/bibs.bib
+Warning--entry type for "ELFsh" isn't style-file defined
+--line 123 of file data/bibs.bib
+Warning--entry type for "elf1.2" isn't style-file defined
+--line 175 of file data/bibs.bib
+Warning--entry type for "infelf" isn't style-file defined
+--line 209 of file data/bibs.bib
+Warning--I didn't find a database entry for "1"
+Warning--I didn't find a database entry for "20"
+Warning--I didn't find a database entry for "4"
+Warning--I didn't find a database entry for "7"
+Warning--I didn't find a database entry for "12"
+Warning--I didn't find a database entry for "19"
+Warning--I didn't find a database entry for "21"
+Warning--I didn't find a database entry for "22"
+Warning--I didn't find a database entry for "5"
+Warning--I didn't find a database entry for "18"
+Warning--I didn't find a database entry for "9"
+Warning--I didn't find a database entry for "14"
+Warning--I didn't find a database entry for "11"
+Warning--I didn't find a database entry for "25"
+Warning--I didn't find a database entry for "15"
+Warning--I didn't find a database entry for "16"
+Warning--I didn't find a database entry for "3"
+Warning--I didn't find a database entry for "17"
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+You can't pop an empty literal stack for entry elf1.2
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry heike
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry heike
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry heike
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry silvio
+while executing---line 3165 of file buaathesis.bst
+Warning--empty author and editor in simple
+You can't pop an empty literal stack for entry simple
+while executing---line 3165 of file buaathesis.bst
+Warning--empty year in simple
+You can't pop an empty literal stack for entry simple
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry prototype
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry prototype
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry subversive
+while executing---line 3165 of file buaathesis.bst
+Warning--empty year in subversive
+You can't pop an empty literal stack for entry subversive
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry cerberus
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry cerberus
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry sharelib
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry sharelib
+while executing---line 3165 of file buaathesis.bst
+Warning--empty year in elfsh
+You can't pop an empty literal stack for entry elfsh
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry infelf
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry printme
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry modern
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry disk
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry disk
+while executing---line 3165 of file buaathesis.bst
+Warning--empty journal in apple
+Warning--empty year in apple
+You can't pop an empty literal stack for entry apple
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry apple
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry apple
+while executing---line 3165 of file buaathesis.bst
+Warning--empty publisher in vxworks1
+You've used 15 entries,
+            6589 wiz_defined-function locations,
+            1274 strings with 9888 characters,
+and the built_in function-call counts, 3914 in all, are:
+= -- 347
+> -- 32
+< -- 15
++ -- 32
+- -- 16
+* -- 211
+:= -- 561
+add.period$ -- 50
+call.type$ -- 15
+change.case$ -- 15
+chr.to.int$ -- 15
+cite$ -- 23
+duplicate$ -- 209
+empty$ -- 552
+format.name$ -- 36
+if$ -- 966
+int.to.chr$ -- 1
+int.to.str$ -- 16
+missing$ -- 24
+newline$ -- 88
+num.names$ -- 28
+pop$ -- 108
+preamble$ -- 1
+purify$ -- 15
+quote$ -- 0
+skip$ -- 167
+stack$ -- 0
+substring$ -- 59
+swap$ -- 24
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 58
+warning$ -- 7
+while$ -- 16
+width$ -- 0
+write$ -- 206
+(There were 38 error messages)

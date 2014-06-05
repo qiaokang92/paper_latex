@@ -1,0 +1,182 @@
+\relax 
+\citation{elf1.2}
+\citation{elf1.2}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2\ignorespaces \hspace  {0.3em}}代码插入与劫持技术分析}{3}{chapter.2}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}关于ELF格式的讨论}{3}{section.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}ELF文件类型}{3}{subsection.2.1.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}链接视图与执行视图}{3}{subsection.2.1.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces 链接视图与执行视图\relax }}{4}{figure.caption.2}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{elf-map}{{2.1}{4}{链接视图与执行视图\relax \relax }{figure.caption.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces 节区头部表\relax }}{5}{figure.caption.3}}
+\newlabel{sections}{{2.2}{5}{节区头部表\relax \relax }{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces 程序头部表\relax }}{5}{figure.caption.4}}
+\newlabel{programs}{{2.3}{5}{程序头部表\relax \relax }{figure.caption.4}{}}
+\citation{heike}
+\citation{heike}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.3}文件空间和地址空间}{6}{subsection.2.1.3}}
+\newlabel{twoqs}{{2.1.3}{6}{文件空间和地址空间\relax }{subsection.2.1.3}{}}
+\citation{heike}
+\citation{heike}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}ELF插入技术分析}{7}{section.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}利用nop指令串插入代码}{7}{subsection.2.2.1}}
+\newlabel{nopinjection}{{2.2.1}{7}{利用nop指令串插入代码\relax }{subsection.2.2.1}{}}
+\newlabel{nop}{{2.1}{7}{/bin/ls中存在的nop指令串\relax }{lstlisting.2.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.1}/bin/ls中存在的nop指令串}{7}{lstlisting.2.1}}
+\citation{silvio}
+\citation{silvio}
+\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces 典型ELF文件中的nop串占据的空间\relax }}{8}{table.caption.5}}
+\newlabel{nopbytes}{{2.1}{8}{典型ELF文件中的nop串占据的空间\relax \relax }{table.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}在代码段的最后分区插入代码}{8}{subsection.2.2.2}}
+\newlabel{after}{{2.2.2}{8}{在代码段的最后分区插入代码\relax }{subsection.2.2.2}{}}
+\citation{silvio}
+\citation{silvio}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces hello程序的程序头部表\relax }}{9}{figure.caption.6}}
+\newlabel{hello}{{2.4}{9}{hello程序的程序头部表\relax \relax }{figure.caption.6}{}}
+\citation{simple,prototype,subversive,cerberus,sharelib}
+\citation{simple}
+\citation{prototype}
+\citation{subversive}
+\citation{cerberus}
+\citation{sharelib}
+\citation{elfsh}
+\citation{elfsh}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces Linux加载机制中的段合并\relax }}{10}{figure.caption.7}}
+\newlabel{linuxmap}{{2.5}{10}{Linux加载机制中的段合并\relax \relax }{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}在代码段之前插入代码}{10}{subsection.2.2.3}}
+\newlabel{before}{{2.2.3}{10}{在代码段之前插入代码\relax }{subsection.2.2.3}{}}
+\newlabel{main}{{\caption@xref {main}{ on input line 491}}{11}{在代码段的最后分区插入代码\relax }{figure.caption.8}{}}
+\newlabel{main1}{{2.6(a)}{11}{Subfigure 2 2.6(a)\relax }{subfigure.2.6.1}{}}
+\newlabel{sub@main1}{{(a)}{11}{Subfigure 2 2.6(a)\relax }{subfigure.2.6.1}{}}
+\newlabel{main2}{{2.6(b)}{11}{Subfigure 2 2.6(b)\relax }{subfigure.2.6.2}{}}
+\newlabel{sub@main2}{{(b)}{11}{Subfigure 2 2.6(b)\relax }{subfigure.2.6.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces 可执行文件插入代码前后的程序头表对比\relax }}{11}{figure.caption.8}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {插入前}}}{11}{figure.caption.8}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {插入后}}}{11}{figure.caption.8}}
+\newlabel{myprintf.c}{{2.2}{12}{myprintf.c源代码\relax }{lstlisting.2.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.2}myprintf.c源代码}{12}{lstlisting.2.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}二进制程序劫持技术分析}{12}{section.2.3}}
+\newlabel{section_hijack}{{2.3}{12}{二进制程序劫持技术分析\relax }{section.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}修改ELF文件入口点}{12}{subsection.2.3.1}}
+\citation{silvio}
+\citation{silvio}
+\newlabel{fig-matrix-a}{{2.7(a)}{13}{Subfigure 2 2.7(a)\relax }{subfigure.2.7.1}{}}
+\newlabel{sub@fig-matrix-a}{{(a)}{13}{Subfigure 2 2.7(a)\relax }{subfigure.2.7.1}{}}
+\newlabel{fig-matrix-b}{{2.7(b)}{13}{Subfigure 2 2.7(b)\relax }{subfigure.2.7.2}{}}
+\newlabel{sub@fig-matrix-b}{{(b)}{13}{Subfigure 2 2.7(b)\relax }{subfigure.2.7.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces 插入前节头表与程序头表\relax }}{13}{figure.caption.9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {插入前节头表}}}{13}{figure.caption.9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {插入前程序头表}}}{13}{figure.caption.9}}
+\newlabel{111}{{2.7}{13}{插入前节头表与程序头表\relax \relax }{figure.caption.9}{}}
+\newlabel{fig-matrix-c}{{2.8(a)}{14}{Subfigure 2 2.8(a)\relax }{subfigure.2.8.1}{}}
+\newlabel{sub@fig-matrix-c}{{(a)}{14}{Subfigure 2 2.8(a)\relax }{subfigure.2.8.1}{}}
+\newlabel{fig-matrix-d}{{2.8(b)}{14}{Subfigure 2 2.8(b)\relax }{subfigure.2.8.2}{}}
+\newlabel{sub@fig-matrix-d}{{(b)}{14}{Subfigure 2 2.8(b)\relax }{subfigure.2.8.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.8}{\ignorespaces 插入后程序头表和节头表\relax }}{14}{figure.caption.10}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {插入后节头表}}}{14}{figure.caption.10}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {插入后程序头表}}}{14}{figure.caption.10}}
+\newlabel{222}{{2.8}{14}{插入后程序头表和节头表\relax \relax }{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.9}{\ignorespaces ELF文件头部\relax }}{14}{figure.caption.11}}
+\newlabel{header}{{2.9}{14}{ELF文件头部\relax \relax }{figure.caption.11}{}}
+\newlabel{dia1}{{2.10(a)}{15}{Subfigure 2 2.10(a)\relax }{subfigure.2.10.1}{}}
+\newlabel{sub@dia1}{{(a)}{15}{Subfigure 2 2.10(a)\relax }{subfigure.2.10.1}{}}
+\newlabel{dia2}{{2.10(b)}{15}{Subfigure 2 2.10(b)\relax }{subfigure.2.10.2}{}}
+\newlabel{sub@dia2}{{(b)}{15}{Subfigure 2 2.10(b)\relax }{subfigure.2.10.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.10}{\ignorespaces 可执行文件代码插入前后执行流程对比\relax }}{15}{figure.caption.12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {}}}{15}{figure.caption.12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {}}}{15}{figure.caption.12}}
+\newlabel{dia}{{2.10}{15}{可执行文件代码插入前后执行流程对比\relax \relax }{figure.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.11}{\ignorespaces 修改后的ls程序运行结果\relax }}{15}{figure.caption.13}}
+\newlabel{ls}{{2.11}{15}{修改后的ls程序运行结果\relax \relax }{figure.caption.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}在函数头增加跳转}{15}{subsection.2.3.2}}
+\newlabel{sub_jmp}{{2.3.2}{15}{在函数头增加跳转\relax }{subsection.2.3.2}{}}
+\newlabel{usr}{{2.3}{15}{函数体开头的指令\relax }{lstlisting.2.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.3}函数体开头的指令}{15}{lstlisting.2.3}}
+\newlabel{inj}{{2.4}{15}{函数体开头的替换指令\relax }{lstlisting.2.4}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.4}函数体开头的替换指令}{15}{lstlisting.2.4}}
+\citation{elf1.2}
+\citation{elf1.2}
+\newlabel{printhello}{{2.5}{16}{用于劫持某个函数的插入代码\relax }{lstlisting.2.5}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.5}用于劫持某个函数的插入代码}{16}{lstlisting.2.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}通过篡改动态链接数据结构}{16}{subsection.2.3.3}}
+\newlabel{sub_plt}{{2.3.3}{16}{通过篡改动态链接数据结构\relax }{subsection.2.3.3}{}}
+\@setckpt{data/2_need}{
+\setcounter{page}{18}
+\setcounter{equation}{0}
+\setcounter{enumi}{0}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{CTEX@sectiondepth}{2}
+\setcounter{part}{0}
+\setcounter{chapter}{2}
+\setcounter{section}{3}
+\setcounter{subsection}{3}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{11}
+\setcounter{table}{1}
+\setcounter{parentequation}{0}
+\setcounter{endNonectr}{11}
+\setcounter{currNonectr}{0}
+\setcounter{Item}{0}
+\setcounter{Hfootnote}{0}
+\setcounter{Hy@AnnotLevel}{0}
+\setcounter{bookmark@seq@number}{14}
+\setcounter{NAT@ctr}{0}
+\setcounter{LT@tables}{0}
+\setcounter{LT@chunks}{0}
+\setcounter{subfigure}{0}
+\setcounter{lofdepth}{1}
+\setcounter{subtable}{0}
+\setcounter{lotdepth}{1}
+\setcounter{lstnumber}{12}
+\setcounter{currproofctr}{0}
+\setcounter{endproofctr}{0}
+\setcounter{proof}{0}
+\setcounter{currassumptionctr}{0}
+\setcounter{endassumptionctr}{0}
+\setcounter{assumption}{0}
+\setcounter{currdefinitionctr}{0}
+\setcounter{enddefinitionctr}{0}
+\setcounter{definition}{0}
+\setcounter{currpropositionctr}{0}
+\setcounter{endpropositionctr}{0}
+\setcounter{proposition}{0}
+\setcounter{currlemmactr}{0}
+\setcounter{endlemmactr}{0}
+\setcounter{lemma}{0}
+\setcounter{currtheoremctr}{0}
+\setcounter{endtheoremctr}{0}
+\setcounter{theorem}{0}
+\setcounter{curraxiomctr}{0}
+\setcounter{endaxiomctr}{0}
+\setcounter{axiom}{0}
+\setcounter{currcorollaryctr}{0}
+\setcounter{endcorollaryctr}{0}
+\setcounter{corollary}{0}
+\setcounter{currexercisectr}{0}
+\setcounter{endexercisectr}{0}
+\setcounter{exercise}{0}
+\setcounter{currexamplectr}{0}
+\setcounter{endexamplectr}{0}
+\setcounter{example}{0}
+\setcounter{currremarkctr}{0}
+\setcounter{endremarkctr}{0}
+\setcounter{remark}{0}
+\setcounter{currproblemctr}{0}
+\setcounter{endproblemctr}{0}
+\setcounter{problem}{0}
+\setcounter{currconjecturectr}{0}
+\setcounter{endconjecturectr}{0}
+\setcounter{conjecture}{0}
+\setcounter{ContinuedFloat}{0}
+\setcounter{assign}{4}
+\setcounter{section@level}{2}
+\setcounter{lstlisting}{5}
+}

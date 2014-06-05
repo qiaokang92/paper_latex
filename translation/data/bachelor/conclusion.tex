@@ -1,0 +1,38 @@
+% !Mode:: "TeX:UTF-8"
+\chapter*{结论}
+\addcontentsline{toc}{chapter}{结论}
+
+\begin{itemize}
+  \item 取得的成果
+\end{itemize}
+
+经过分析和实验证明，
+通过在nop指令串中写入代码，
+可以将代码插入到VxWorks二进制镜像文件中。
+劫持方法上，使用间接跳转法进行劫持，
+即利用一段插入代码proxy作为中间代码。
+可以简化劫持流程；
+另一方面，由于无需修改插入函数，
+也很大程度上方便了插入函数的编写。
+
+
+利用选定的插入和劫持方案，
+在VxWorks中实现了一个类似Linux下inotify的文件监控机制——mini-notify。
+该机制能够捕获系统中所有的文件操作，
+并输出操作的文件路径等信息。
+从而证明了插入与劫持技术在VxWorks下的可行性。
+
+\begin{itemize}
+  \item 尚存的不足
+\end{itemize}
+
+相对于在Unix/Linux下丰富的ELF插入技术，
+本文经分析认为只有利用nop串插入在VxWorks中
+是可行的。没有找到其他合适的代码插入方式。
+
+VxWorks系统已经实现了动态插入一个模块的功能，
+类似于Linux下的动态链接程序，
+本文缺少对这一方面的分析和研究。
+
+
+\cleardoublepage

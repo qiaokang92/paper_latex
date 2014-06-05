@@ -1,0 +1,91 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Committe(1995)]{elf1.2}
+Committe T.
+\newblock Tool Interface Standard(TIS) Executable and Linking Formate(ELF)
+  Specification[M].
+\newblock
+\newblock 1.2.[S.l.]: [s.n.] , 1995.
+
+\bibitem[Kaspersky(2010)]{heike}
+Kaspersky K.
+\newblock 黑客反汇编揭秘[M].
+\newblock
+\newblock 第二版.[S.l.]: 电子工业出版社, 2010: 216--234.
+
+\bibitem[Cesare(1998)]{silvio}
+Cesare S.
+\newblock
+\newblock Unix ELF parasites and virus[M].[S.l.]: [s.n.] , 1998.
+\newblock \url{http://vxheavens.com/lib/vsc01.html}.
+
+\bibitem[sim()]{simple}
+
+\newblock Simple ELF Parasitic UNIX Virus[M].[S.l.]: [s.n.] .
+\newblock \url{http://academicunderground.org/virus/pnlVirus4.html}.
+
+\bibitem[Dirk~Gerrits and Kooijmans(2007)]{prototype}
+Dirk~Gerrits R.~G., Kooijmans P.
+\newblock
+\newblock An ELF virus prototype[A].[S.l.]: 2WC06 Hackers Hut 2005/2006, 2007.
+
+\bibitem[the grugq()]{subversive}
+grugq.
+\newblock
+\newblock Subversive Dynamic Linking to Libraries[M].[S.l.]: [s.n.] .
+
+\bibitem[mayhem(2003)]{cerberus}
+mayhem.
+\newblock The Cerberus ELF Interface[J].
+\newblock phrack, 2003.
+
+\bibitem[Cesare(2000)]{sharelib}
+Cesare S.
+\newblock Shared Library Call Redirection via ELF PLT Infection[J].
+\newblock phrack, 2000.
+
+\bibitem[team()]{elfsh}
+team E.
+\newblock .[S.l.]: [s.n.] .
+\newblock \url{http://www.eresi-project.org/wiki/TheELFsh}.
+
+\bibitem[Z0mbie(2004)]{infelf}
+Z0mbie.
+\newblock
+\newblock Injected Evil (executable files infection)[M].[S.l.]: [s.n.] , 2004.
+\newblock \url{http://vxheavens.com/lib/vzo08.html}.
+
+\bibitem[Ang~Cui and Stolfo(2012)]{printme}
+Ang~Cui M.~C., Stolfo S.~J.
+\newblock
+\newblock When Firmware Modifications Attack: A Case Study of Embedded
+  Exploitation[R].[S.l.]: Columbia University, 2012.
+
+\bibitem[O'Neill(2009)]{modern}
+O'Neill R.
+\newblock
+\newblock Modern Day ELF Runtime infection via GOT poisoning[M].[S.l.]: [s.n.]
+  , 2009.
+\newblock \url{http://vxheavens.com/lib/vrn00.html}.
+
+\bibitem[Zaddach(2013)]{disk}
+Zaddach J.
+\newblock Implementation and Implications of a Stealth Hard-Drive Backdoor[J].
+\newblock ACSAC '13, 2013.
+
+\bibitem[Chen()]{apple}
+Chen K.
+\newblock
+\newblock Reversing and exploiting an Apple firmware update[J].
+
+\bibitem[Inc.()]{vxworks1}
+Inc. W.~R.
+\newblock \url{http://www.windriver.com/products/vxworks.html}.
+\newblock Wind River VxWorks.
+
+\end{thebibliography}

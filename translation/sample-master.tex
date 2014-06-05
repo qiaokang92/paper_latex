@@ -1,0 +1,49 @@
+% !Mode:: "TeX:UTF-8"
+\documentclass[engineer,openright,twoside,colorfalse]{buaathesis}
+\begin{document}
+
+% 用户信息
+\include{data/com_info}
+\include{data/master/master_info}
+
+% 中英封面、提名页、授权书
+\maketitle
+% 前言页眉页脚样式
+\pagestyle{frontmatter}
+% 摘要
+\include{data/abstract}
+% 目录、插图目录、表格目录
+\tableofcontents
+\listoffigures
+\listoftables
+% 符号表
+\include{data/master/denotation}
+% 将表格的行距增大为正常行距
+\renewcommand{\arraystretch}{1.5}
+% 正文页码样式
+\mainmatter
+% 正文页眉页脚样式
+\pagestyle{mainmatter}
+
+% 正文
+\include{data/1_intro}
+\include{data/2_need}
+\include{data/3_inject}
+\include{data/4_hijack}
+
+% 参考文献
+\include{data/reference}
+
+% 附录
+\appendix
+\include{data/appendix1-faq}
+\include{data/appendix2-contactus}
+
+% 附页标题样式
+\backmatter
+
+% 附页
+\include{data/master/back1-achievement}
+\include{data/master/back2-thanks}
+\include{data/master/back3-aboutauthor}
+\end{document}

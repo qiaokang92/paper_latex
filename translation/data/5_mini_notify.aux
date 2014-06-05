@@ -1,0 +1,113 @@
+\relax 
+\@writefile{toc}{\contentsline {chapter}{\numberline {5\ignorespaces \hspace  {0.3em}}实例：mini-notify——代码插入与函数劫持在VxWorks中的实现}{30}{chapter.5}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}背景}{30}{section.5.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Linux下的文件监控系统inotify介绍}{30}{subsection.5.1.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}VxWorks下的dosFs文件系统}{30}{subsection.5.1.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces VxWorks中的IO系统图示\relax }}{30}{figure.caption.25}}
+\newlabel{iosys}{{5.1}{30}{VxWorks中的IO系统图示\relax \relax }{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces 打开一个文件的函数调用流程\relax }}{31}{figure.caption.26}}
+\newlabel{open}{{5.2}{31}{打开一个文件的函数调用流程\relax \relax }{figure.caption.26}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}mini-notify的目标}{31}{section.5.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces mini-notify运行原理\relax }}{31}{figure.caption.27}}
+\newlabel{mini0}{{5.3}{31}{mini-notify运行原理\relax \relax }{figure.caption.27}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}环境搭建与配置}{32}{section.5.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Linux主机}{32}{subsection.5.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Windows主机与VxWorks虚拟机}{32}{subsection.5.3.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Windows主机下的软件和虚拟机\relax }}{33}{figure.caption.28}}
+\newlabel{win}{{5.4}{33}{Windows主机下的软件和虚拟机\relax \relax }{figure.caption.28}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}mini-notify方案设计}{33}{section.5.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}劫持位置选择}{33}{subsection.5.4.1}}
+\newlabel{open_prototype}{{5.1}{33}{dosFsOpen()函数原型\relax }{lstlisting.5.1}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.1}dosFsOpen()函数原型}{33}{lstlisting.5.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}函数劫持方案}{34}{subsection.5.4.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces 劫持dosFsOpen的函数跳转流程\relax }}{34}{figure.caption.29}}
+\newlabel{proxy}{{5.5}{34}{劫持dosFsOpen的函数跳转流程\relax \relax }{figure.caption.29}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.3}代码插入方案}{34}{subsection.5.4.3}}
+\newlabel{finish}{{5.2}{34}{为插入而准备的汇编代码\relax }{lstlisting.5.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.2}为插入而准备的汇编代码}{34}{lstlisting.5.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}mini-notify的实现}{35}{section.5.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.6}测试与评价}{35}{section.5.6}}
+\newlabel{file}{{5.3}{35}{operate\_file()函数源代码\relax }{lstlisting.5.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.3}operate\_file()函数源代码}{35}{lstlisting.5.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces 测试程序运行结果\relax }}{36}{figure.caption.30}}
+\newlabel{after}{{5.6}{36}{测试程序运行结果\relax \relax }{figure.caption.30}{}}
+\@setckpt{data/5_mini_notify}{
+\setcounter{page}{37}
+\setcounter{equation}{0}
+\setcounter{enumi}{0}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{CTEX@sectiondepth}{2}
+\setcounter{part}{0}
+\setcounter{chapter}{5}
+\setcounter{section}{6}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{6}
+\setcounter{table}{0}
+\setcounter{parentequation}{0}
+\setcounter{endNonectr}{18}
+\setcounter{currNonectr}{0}
+\setcounter{Item}{0}
+\setcounter{Hfootnote}{0}
+\setcounter{Hy@AnnotLevel}{0}
+\setcounter{bookmark@seq@number}{41}
+\setcounter{NAT@ctr}{0}
+\setcounter{LT@tables}{0}
+\setcounter{LT@chunks}{0}
+\setcounter{subfigure}{0}
+\setcounter{lofdepth}{1}
+\setcounter{subtable}{0}
+\setcounter{lotdepth}{1}
+\setcounter{lstnumber}{17}
+\setcounter{currproofctr}{0}
+\setcounter{endproofctr}{0}
+\setcounter{proof}{0}
+\setcounter{currassumptionctr}{0}
+\setcounter{endassumptionctr}{0}
+\setcounter{assumption}{0}
+\setcounter{currdefinitionctr}{0}
+\setcounter{enddefinitionctr}{0}
+\setcounter{definition}{0}
+\setcounter{currpropositionctr}{0}
+\setcounter{endpropositionctr}{0}
+\setcounter{proposition}{0}
+\setcounter{currlemmactr}{0}
+\setcounter{endlemmactr}{0}
+\setcounter{lemma}{0}
+\setcounter{currtheoremctr}{0}
+\setcounter{endtheoremctr}{0}
+\setcounter{theorem}{0}
+\setcounter{curraxiomctr}{0}
+\setcounter{endaxiomctr}{0}
+\setcounter{axiom}{0}
+\setcounter{currcorollaryctr}{0}
+\setcounter{endcorollaryctr}{0}
+\setcounter{corollary}{0}
+\setcounter{currexercisectr}{0}
+\setcounter{endexercisectr}{0}
+\setcounter{exercise}{0}
+\setcounter{currexamplectr}{0}
+\setcounter{endexamplectr}{0}
+\setcounter{example}{0}
+\setcounter{currremarkctr}{0}
+\setcounter{endremarkctr}{0}
+\setcounter{remark}{0}
+\setcounter{currproblemctr}{0}
+\setcounter{endproblemctr}{0}
+\setcounter{problem}{0}
+\setcounter{currconjecturectr}{0}
+\setcounter{endconjecturectr}{0}
+\setcounter{conjecture}{0}
+\setcounter{ContinuedFloat}{0}
+\setcounter{assign}{4}
+\setcounter{section@level}{1}
+\setcounter{lstlisting}{3}
+}
