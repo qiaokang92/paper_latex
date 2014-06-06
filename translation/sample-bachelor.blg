@@ -10,10 +10,8 @@ A level-1 auxiliary file: data/2_need.aux
 A level-1 auxiliary file: data/3_inject.aux
 A level-1 auxiliary file: data/4_hijack.aux
 A level-1 auxiliary file: data/5_mini_notify.aux
-A level-1 auxiliary file: data/bachelor/conclusion.aux
+A level-1 auxiliary file: data/6_conclusion.aux
 A level-1 auxiliary file: data/reference.aux
-A level-1 auxiliary file: data/appendix1-faq.aux
-A level-1 auxiliary file: data/appendix2-contactus.aux
 new.block is an unknown function---line 74 of file buaathesis.bst
 remove.dots is an unknown function---line 521 of file buaathesis.bst
 remove.dots is an unknown function---line 566 of file buaathesis.bst
@@ -62,16 +60,17 @@ Warning--I didn't find a database entry for "15"
 Warning--I didn't find a database entry for "16"
 Warning--I didn't find a database entry for "3"
 Warning--I didn't find a database entry for "17"
+Warning--I didn't find a database entry for "24"
+Warning--I didn't find a database entry for "6"
+Warning--I didn't find a database entry for "2"
 Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
-You can't pop an empty literal stack for entry elf1.2
+You can't pop an empty literal stack for entry cerberus
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry heike
-while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry heike
-while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry heike
+You can't pop an empty literal stack for entry cerberus
 while executing---line 3165 of file buaathesis.bst
 You can't pop an empty literal stack for entry silvio
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry printme
 while executing---line 3165 of file buaathesis.bst
 Warning--empty author and editor in simple
 You can't pop an empty literal stack for entry simple
@@ -83,27 +82,19 @@ You can't pop an empty literal stack for entry prototype
 while executing---line 3165 of file buaathesis.bst
 You can't pop an empty literal stack for entry prototype
 while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry sharelib
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry sharelib
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry modern
+while executing---line 3165 of file buaathesis.bst
 You can't pop an empty literal stack for entry subversive
 while executing---line 3165 of file buaathesis.bst
 Warning--empty year in subversive
 You can't pop an empty literal stack for entry subversive
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry cerberus
-while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry cerberus
-while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry sharelib
-while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry sharelib
-while executing---line 3165 of file buaathesis.bst
-Warning--empty year in elfsh
-You can't pop an empty literal stack for entry elfsh
-while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry infelf
-while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry printme
-while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry modern
+Warning--empty year in ELFsh
+You can't pop an empty literal stack for entry ELFsh
 while executing---line 3165 of file buaathesis.bst
 You can't pop an empty literal stack for entry disk
 while executing---line 3165 of file buaathesis.bst
@@ -118,9 +109,19 @@ while executing---line 3165 of file buaathesis.bst
 You can't pop an empty literal stack for entry apple
 while executing---line 3165 of file buaathesis.bst
 Warning--empty publisher in vxworks1
+You can't pop an empty literal stack for entry elf1.2
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry heike
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry heike
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry heike
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry infelf
+while executing---line 3165 of file buaathesis.bst
 You've used 15 entries,
             6589 wiz_defined-function locations,
-            1274 strings with 9888 characters,
+            1275 strings with 9839 characters,
 and the built_in function-call counts, 3914 in all, are:
 = -- 347
 > -- 32

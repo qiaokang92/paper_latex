@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.4-0.9998 (TeX Live 2012/Debian) (format=xelatex 2014.5.30)  5 JUN 2014 23:05
+This is XeTeX, Version 3.1415926-2.4-0.9998 (TeX Live 2012/Debian) (format=xelatex 2014.5.30)  6 JUN 2014 11:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1462,12 +1462,8 @@ LaTeX Warning: Unused global option(s):
 
 (./sample-bachelor.aux (./data/com_info.aux) (./data/bachelor/bachelor_info.aux
 ) (./data/abstract.aux) (./data/1_intro.aux) (./data/2_need.aux)
-(./data/3_inject.aux) (./data/4_hijack.aux) (./data/5_mini_notify.aux
-
-LaTeX Warning: Label `after' multiply defined.
-
-) (./data/bachelor/conclusion.aux) (./data/reference.aux)
-(./data/appendix1-faq.aux) (./data/appendix2-contactus.aux))
+(./data/3_inject.aux) (./data/4_hijack.aux) (./data/5_mini_notify.aux)
+(./data/6_conclusion.aux) (./data/reference.aux))
 \openout1 = `sample-bachelor.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 3.
@@ -1836,18 +1832,15 @@ File: figure/buaamark.eps Graphic file (type eps)
 ])
 File: figure/buaamark.eps Graphic file (type eps)
  <figure/buaamark.eps>
-[3] (./sample-bachelor.toc
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [4
-
-
-])
+[3] (./sample-bachelor.toc)
 \tf@toc=\write4
 \openout4 = `sample-bachelor.toc'.
 
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps>
-[5]
+ <figure/buaamark.eps> [4
+
+
+]
 \openout2 = `data/1_intro.aux'.
 
  (./data/1_intro.tex
@@ -1921,47 +1914,137 @@ File: figure/buaamark.eps Graphic file (type eps)
 
  (./data/2_need.tex
 2\ignorespaces 
+
+LaTeX Warning: Reference `fig1' on page 3 undefined on input line 9.
+
+
+LaTeX Warning: Reference `fig2' on page 3 undefined on input line 29.
+
 File: figure/buaamark.eps Graphic file (type eps)
 <figure/buaamark.eps> [3
 
 
 
 ]
-File: figure/elf-map.png Graphic file (type QTm)
- <use  "figure/elf-map.png" >
-File: figure/sections.png Graphic file (type QTm)
 
-<use  "figure/sections.png" >
+LaTeX Warning: Reference `fig3' on page 4 undefined on input line 37.
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+)
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [4]
+\openout2 = `data/3_inject.aux'.
+
+ (./data/3_inject.tex
+3\ignorespaces 
+File: figure/buaamark.eps Graphic file (type eps)
+<figure/buaamark.eps> [5
+
+
+
+]
+
+Package natbib Warning: Citation `5' on page 6 undefined on input line 26.
 
 File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [4]
-File: figure/programs.png Graphic file (type QTm)
- <use  "figure/programs.png" >
+<figure/buaamark.eps> [6]
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps>
-[5]
+ <figure/buaamark.eps> [7]
+
+Package natbib Warning: Citation `7' on page 8 undefined on input line 70.
+
+
+LaTeX Warning: Reference `fig5' on page 8 undefined on input line 76.
+
+)
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [6]
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2004/09/05 1.3 listings language file
+ <figure/buaamark.eps> [8]
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [9]
+\openout2 = `data/4_hijack.aux'.
+
+ (./data/4_hijack.tex
+4\ignorespaces 
+
+LaTeX Warning: Reference `fig6' on page 10 undefined on input line 9.
+
+File: figure/buaamark.eps Graphic file (type eps)
+<figure/buaamark.eps> [10
+
+
+
+]
+
+Package natbib Warning: Citation `24' on page 11 undefined on input line 44.
+
+
+LaTeX Warning: Reference `fig9' on page 11 undefined on input line 57.
+
+File: figure/buaamark.eps Graphic file (type eps)
+<figure/buaamark.eps> [11]
+
+Package natbib Warning: Citation `6' on page 12 undefined on input line 78.
+
+
+Package natbib Warning: Citation `2' on page 12 undefined on input line 80.
+
+File: figure/buaamark.eps Graphic file (type eps)
+<figure/buaamark.eps> [12])
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [13]
+\openout2 = `data/5_mini_notify.aux'.
+
+
+(./data/5_mini_notify.tex
+5\ignorespaces 
+File: figure/buaamark.eps Graphic file (type eps)
+<figure/buaamark.eps> [14
+
+
+
+]
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [15]
+
+LaTeX Warning: Reference `fig10' on page 16 undefined on input line 47.
+
+
+LaTeX Warning: Reference `fig11' on page 16 undefined on input line 54.
+
+File: figure/buaamark.eps Graphic file (type eps)
+<figure/buaamark.eps> [16]
+
+Package natbib Warning: Citation `16' on page 17 undefined on input line 61.
+
+
+Package natbib Warning: Citation `17' on page 17 undefined on input line 61.
+
 )
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang2.sty
-File: lstlang2.sty 2004/09/05 1.3 listings language file
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [17]
+\openout2 = `data/6_conclusion.aux'.
+
+ (./data/6_conclusion.tex
+6\ignorespaces 
 )
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang3.sty
-File: lstlang3.sty 2004/09/05 1.3 listings language file
-)
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 305.
-LaTeX Font Info:    Try loading font information for EU1+txtt on input line 305
-.
-LaTeX Font Info:    No file EU1txtt.fd. on input line 305.
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [18
+
+
+
+]
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [19]
+\openout2 = `data/reference.aux'.
+
+ (./data/reference.tex
+(./sample-bachelor.bbl
+LaTeX Font Info:    Try loading font information for EU1+txtt on input line 17.
+
+LaTeX Font Info:    No file EU1txtt.fd. on input line 17.
 
 
 LaTeX Font Warning: Font shape `EU1/txtt/m/n' undefined
-(Font)              using `EU1/lmr/m/n' instead on input line 305.
+(Font)              using `EU1/lmr/m/n' instead on input line 17.
 
 .................................................
 . fontspec info: "no-scripts"
@@ -1997,260 +2080,14 @@ talicFont={*},BoldItalicFont={*},SlantedFont={*},BoldSlantedFont={*}].
 . * 'sl/,FakeBold={4.000000000}' with NFSS spec.:
 . <->"FangSong/ICU:mapping=tex-text;embolden=4.000000000;"
 .................................................
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [7]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [8]
-File: figure/helloprograms.png Graphic file (type QTm)
-
-<use  "figure/helloprograms.png" >
-File: figure/linuxmap.eps Graphic file (type eps)
- <figure/linuxmap.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [9]
-File: figure/main.png Graphic file (type QTm)
- <use  "figure/main.png" >
-File: figure/main2.png Graphic file (type QTm)
- <use  "figure/main2.png" >
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [10]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [11]
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
-)
-File: figure/sht1.png Graphic file (type QTm)
-
-<use  "figure/sht1.png" >
-File: figure/pht1.png Graphic file (type QTm)
- <use  "figure/pht1.png" >
-File: figure/sht2.png Graphic file (type QTm)
- <use  "figure/sht2.png" >
-File: figure/pht2.png Graphic file (type QTm)
-
-<use  "figure/pht2.png" >
-File: figure/header.png Graphic file (type QTm)
- <use  "figure/header.png" >
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps>
-[12]
-File: figure/dia1.eps Graphic file (type eps)
- <figure/dia1.eps>
-File: figure/dia2.eps Graphic file (type eps)
- <figure/dia2.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/ls.png Graphic file (type QTm)
-<use  "figure/ls.png" >
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [13]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [14]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps>
-[15]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [16])
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [17]
-\openout2 = `data/3_inject.aux'.
-
-
-(./data/3_inject.tex
-3\ignorespaces 
-File: figure/shtandpht.png Graphic file (type QTm)
-<use  "figure/shtandpht.png" >
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [18
-
-
-
-]
-File: figure/ram.eps Graphic file (type eps)
- <figure/ram.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [19]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [20]
-File: figure/bsp.eps Graphic file (type eps)
- <figure/bsp.eps>
-File: figure/ram2.eps Graphic file (type eps)
-
-<figure/ram2.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [21])
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [22]
-\openout2 = `data/4_hijack.aux'.
-
- (./data/4_hijack.tex
-4\ignorespaces 
-File: figure/hijack1.eps Graphic file (type eps)
-<figure/hijack1.eps>
-File: figure/hijack2.eps Graphic file (type eps)
- <figure/hijack2.eps>
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [23
-
-
-
-]
-File: figure/boot.eps Graphic file (type eps)
-
-<figure/boot.eps>
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [24]
-File: figure/init.eps Graphic file (type eps)
- <figure/init.eps>
-File: figure/buaamark.eps Graphic file (type eps)
-
-<figure/buaamark.eps> [25]
-File: figure/ab0.eps Graphic file (type eps)
- <figure/ab0.eps>
-File: figure/ab1.eps Graphic file (type eps)
- <figure/ab1.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [26]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [27]
-File: figure/ab2.eps Graphic file (type eps)
- <figure/ab2.eps>
-File: figure/buaamark.eps Graphic file (type eps)
-
-<figure/buaamark.eps> [28])
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [29]
-\openout2 = `data/5_mini_notify.aux'.
-
-
-(./data/5_mini_notify.tex
-5\ignorespaces 
-File: figure/IOsys.eps Graphic file (type eps)
-<figure/IOsys.eps>
-File: figure/open.eps Graphic file (type eps)
- <figure/open.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [30
-
-
-
-]
-File: figure/mini0.eps Graphic file (type eps)
- <figure/mini0.eps>
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [31]
-File: figure/win.eps Graphic file (type eps)
-
-<figure/win.eps>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [32]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [33]
-File: figure/proxy.eps Graphic file (type eps)
- <figure/proxy.eps>
-File: figure/buaamark.eps Graphic file (type eps)
-
-<figure/buaamark.eps> [34]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [35]
-File: figure/after.jpg Graphic file (type QTm)
-
-<use  "figure/after.jpg" >)
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [36]
-\openout2 = `data/bachelor/conclusion.aux'.
-
-
-(./data/bachelor/conclusion.tex
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [37
-
-
-
-])
-\openout2 = `data/reference.aux'.
-
-
-(./data/reference.tex (./sample-bachelor.bbl)
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [38
-
+ <figure/buaamark.eps> [20
 
 
 
 
 ])
-\openout2 = `data/appendix1-faq.aux'.
-
-
-(./data/appendix1-faq.tex
-附录\nobreakspace {}A
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2004/09/05 1.3 listings language file
-)
-File: figure/buaamark.eps Graphic file (type eps)
-
-<figure/buaamark.eps> [39
-
-
-
-
-]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [40])
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps>
-[41]
-\openout2 = `data/appendix2-contactus.aux'.
-
- (./data/appendix2-contactus.tex
-附录\nobreakspace {}B
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [42
-
-
-
-]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [43]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps>
-[44]
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [45])
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [46]
 \tf@thm=\write5
 \openout5 = `sample-bachelor.thm'.
 
@@ -2263,8 +2100,7 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 51.
 (./sample-bachelor.aux (./data/com_info.aux) (./data/bachelor/bachelor_info.aux
 ) (./data/abstract.aux) (./data/1_intro.aux) (./data/2_need.aux)
 (./data/3_inject.aux) (./data/4_hijack.aux) (./data/5_mini_notify.aux)
-(./data/bachelor/conclusion.aux) (./data/reference.aux)
-(./data/appendix1-faq.aux) (./data/appendix2-contactus.aux))
+(./data/6_conclusion.aux) (./data/reference.aux))
 Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 51.
 Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 51.
 
@@ -2276,16 +2112,16 @@ LaTeX Font Warning: Size substitutions with differences
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 28303 strings out of 494003
- 532906 string characters out of 3152809
- 711000 words of memory out of 3000000
- 30951 multiletter control sequences out of 15000+200000
- 37490 words of font info for 182 fonts, out of 3000000 for 9000
+ 26987 strings out of 494003
+ 516212 string characters out of 3152809
+ 571986 words of memory out of 3000000
+ 29704 multiletter control sequences out of 15000+200000
+ 37466 words of font info for 179 fonts, out of 3000000 for 9000
  1144 hyphenation exceptions out of 8191
- 61i,13n,53p,902b,1227s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 61i,13n,47p,902b,388s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on sample-bachelor.pdf (54 pages).
+Output written on sample-bachelor.pdf (27 pages).
