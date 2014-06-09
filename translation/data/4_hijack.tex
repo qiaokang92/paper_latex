@@ -13,6 +13,12 @@
 这是病毒检测的不可判定性的例证。
 
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.60\textwidth]{figure/fig6.png}
+    \caption{Contradiction of a virus C} 
+    \label{fig6}
+\end{figure} 
 通过修改V的主要程序，我们可以保证，如果决策过程D决定CV是一个病毒，CV不会感染其他程序，因此不会表现为一个病毒。如果D确定CV不是病毒，CV会传染给其他程序，因此成为一个病毒。因此，假设决策过程D是自我矛盾的，从外观精确检测病毒是不可判定的。
 
 
@@ -26,13 +32,28 @@
 
 
 如果D（P1，P2），打印1；
+
 而如果程序类型是P2，状态标记“zzz”将成为：
 
 如果D（P1，P2），打印0；
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.60\textwidth]{figure/fig7.png}
+    \caption{Evolutionary virus EV} 
+    \label{fig7}
+\end{figure} 
+
 两个演化分别调用决策过程D来决定他们是否是等价的。如果D表明他们是等价的，那么P1将打印1而P2将打印一个0，并且D会矛盾。如果D表明他们是不同的，就不打印任何东西。否则它们是平等的，D再次矛盾。因此，假设决策过程D是自我矛盾的，并且通过外表精确的确定这两个程序的等价性不可判定的。
 
 因为P1和P2是相同的程序的演化，程序演化的等价性是不可判定的，并且因为他们都是病毒，所以病毒演化的等价性也是不可判定的。程序UEV还演示了这两种非等价的演化都可以病毒。
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.60\textwidth]{figure/fig8.png}
+    \caption{Undecidable equivalence of evolution of a virus UEV} 
+    \label{fig8}
+\end{figure} 
 
 另一种外观检测的方法，是从行为进行检测。病毒，就像任何其他的程序，为用户请求服务时作为一个代理，并且使用的病毒进行合法的使用时是合法的。行为检测问题成为一个定义，定义系统服务的使用是否合法，并找到一种检测的方法。
 
@@ -56,6 +77,14 @@
 虽然我们已经表明，一般情况下是不可能检测到病毒的，但是任何特定的病毒可以由一个特定的检测方案进行检测。例如，病毒V可以通过寻找1234567作为可执行文件的第一行来很容易地探测到。如果这个可执行文件被感染了，它就无法运行，也就无法传播了。
 使用图\ref{fig9}中的程序代替正常运行的命令，
 并拒绝可执行程序感染病毒V。
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.60\textwidth]{figure/fig9.png}
+    \caption{Protection from virus V} 
+    \label{fig9}
+\end{figure} 
 
 
 同样，任何特定的检测方案可以由一个特定

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.4-0.9998 (TeX Live 2012/Debian) (format=xelatex 2014.5.30)  6 JUN 2014 11:19
+This is XeTeX, Version 3.1415926-2.4-0.9998 (TeX Live 2012/Debian) (format=xelatex 2014.5.30)  9 JUN 2014 16:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1453,17 +1453,16 @@ Normal \dimen register pool exhausted, switching to extended pool.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2011/12/19 v6.7a set line spacing
-)
-\c@assign=\count345
-)
+))
 
 LaTeX Warning: Unused global option(s):
     [colorfalse].
 
 (./sample-bachelor.aux (./data/com_info.aux) (./data/bachelor/bachelor_info.aux
-) (./data/abstract.aux) (./data/1_intro.aux) (./data/2_need.aux)
-(./data/3_inject.aux) (./data/4_hijack.aux) (./data/5_mini_notify.aux)
-(./data/6_conclusion.aux) (./data/reference.aux))
+) (./data/bachelor/assign.aux) (./data/abstract.aux) (./data/1_intro.aux)
+(./data/2_need.aux) (./data/3_inject.aux) (./data/4_hijack.aux)
+(./data/5_mini_notify.aux) (./data/6_conclusion.aux)
+(./data/bachelor/thanks.aux) (./data/reference.aux))
 \openout1 = `sample-bachelor.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 3.
@@ -1631,7 +1630,7 @@ Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count346
+\c@section@level=\count345
 )
 LaTeX Info: Redefining \ref on input line 3.
 LaTeX Info: Redefining \pageref on input line 3.
@@ -1641,7 +1640,7 @@ LaTeX Info: Redefining \nameref on input line 3.
 \@outlinefile=\write3
 \openout3 = `sample-bachelor.out'.
 
-\c@lstlisting=\count347
+\c@lstlisting=\count346
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 \openout2 = `data/com_info.aux'.
@@ -1658,7 +1657,7 @@ File: figure/buaamark.eps Graphic file (type eps)
 . 
 . Font SimHei does not contain any OpenType `Script' information.
 .................................................
-\g_fontspec_family_SimHei_int=\count348
+\g_fontspec_family_SimHei_int=\count347
 .................................................
 . fontspec info: "defining-font"
 . 
@@ -1738,6 +1737,18 @@ LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <15.06> not available
 
 
 ]
+! Undefined control sequence.
+\maketitle ...buaa@bachelor \buaa@bachelor@assign 
+                                                  \frontmatter \announce \el...
+l.16 \maketitle
+               
+? 
+! Undefined control sequence.
+\maketitle ...helor@assign \frontmatter \announce 
+                                                  \else \titleeng \timingye ...
+l.16 \maketitle
+               
+? 
 .................................................
 . fontspec info: "no-scripts"
 . 
@@ -1771,46 +1782,9 @@ talicFont={*},BoldItalicFont={*},SlantedFont={*},BoldSlantedFont={*}].
 . * 'sl/,FakeBold={4.000000000}' with NFSS spec.:
 . <->"SimSun/ICU:mapping=tex-text;embolden=4.000000000;"
 .................................................
-.................................................
-. fontspec info: "no-scripts"
-. 
-. Font STXingkai does not contain any OpenType `Script' information.
-.................................................
-\g_fontspec_family_STXingkai_int=\count349
-.................................................
-. fontspec info: "defining-font"
-. 
-. Font family 'STXingkai(0)' created for font 'STXingkai' with options
-. [Ligatures=TeX,BoldFeatures={FakeBold={4.000000000}},BoldItalicFeatures={Fake
-Bold={4.000000000}},BoldSlantedFeatures={FakeBold={4.000000000}},BoldFont={*},I
-talicFont={*},BoldItalicFont={*},SlantedFont={*},BoldSlantedFont={*}].
-. 
-. This font family consists of the following shapes:
-. 
-. * 'normal' with NFSS spec.:
-. <->"STXingkai/ICU:mapping=tex-text;"
-. 
-. * 'bold' with NFSS spec.:
-. <->"STXingkai/ICU:mapping=tex-text;embolden=4.000000000;"
-. 
-. * 'italic' with NFSS spec.:
-. <->"STXingkai/ICU:mapping=tex-text;"
-. 
-. * 'sl/' with NFSS spec.:
-. <->"STXingkai/ICU:mapping=tex-text;"
-. 
-. * 'bold italic' with NFSS spec.:
-. <->"STXingkai/ICU:mapping=tex-text;embolden=4.000000000;"
-. 
-. * 'sl/,FakeBold={4.000000000}' with NFSS spec.:
-. <->"STXingkai/ICU:mapping=tex-text;embolden=4.000000000;"
-.................................................
- [1]
-Underfull \hbox (badness 10000) in paragraph at lines 16--16
+\openout2 = `data/abstract.aux'.
 
- []
-
-[2]
+(./data/abstract.tex
 File: figure/buaamark.eps Graphic file (type eps)
  <figure/buaamark.eps>
 
@@ -1822,22 +1796,15 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 [1
 
 
-]
-\openout2 = `data/abstract.aux'.
-
- (./data/abstract.tex
-File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [2
-
 ])
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps>
-[3] (./sample-bachelor.toc)
+ <figure/buaamark.eps> [2] (./sample-bachelor.toc)
 \tf@toc=\write4
 \openout4 = `sample-bachelor.toc'.
 
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [4
+ <figure/buaamark.eps>
+[3
 
 
 ]
@@ -1845,63 +1812,6 @@ File: figure/buaamark.eps Graphic file (type eps)
 
  (./data/1_intro.tex
 1\ignorespaces 
-
-Package natbib Warning: Citation `1' on page 1 undefined on input line 8.
-
-
-Package natbib Warning: Citation `20' on page 1 undefined on input line 8.
-
-
-Package natbib Warning: Citation `4' on page 1 undefined on input line 11.
-
-
-Package natbib Warning: Citation `7' on page 1 undefined on input line 11.
-
-
-Package natbib Warning: Citation `12' on page 1 undefined on input line 15.
-
-
-Package natbib Warning: Citation `19' on page 1 undefined on input line 15.
-
-
-Package natbib Warning: Citation `21' on page 1 undefined on input line 15.
-
-
-Package natbib Warning: Citation `22' on page 1 undefined on input line 15.
-
-
-Package natbib Warning: Citation `5' on page 1 undefined on input line 19.
-
-
-Package natbib Warning: Citation `18' on page 1 undefined on input line 19.
-
-
-Package natbib Warning: Citation `18' on page 1 undefined on input line 22.
-
-
-Package natbib Warning: Citation `9' on page 1 undefined on input line 26.
-
-
-Package natbib Warning: Citation `14' on page 1 undefined on input line 31.
-
-
-Package natbib Warning: Citation `11' on page 1 undefined on input line 33.
-
-
-Package natbib Warning: Citation `25' on page 1 undefined on input line 38.
-
-
-Package natbib Warning: Citation `15' on page 1 undefined on input line 52.
-
-
-Package natbib Warning: Citation `16' on page 1 undefined on input line 52.
-
-
-Package natbib Warning: Citation `3' on page 1 undefined on input line 52.
-
-
-Package natbib Warning: Citation `17' on page 1 undefined on input line 52.
-
 File: figure/buaamark.eps Graphic file (type eps)
 <figure/buaamark.eps> [1
 
@@ -1914,144 +1824,148 @@ File: figure/buaamark.eps Graphic file (type eps)
 
  (./data/2_need.tex
 2\ignorespaces 
-
-LaTeX Warning: Reference `fig1' on page 3 undefined on input line 9.
-
-
-LaTeX Warning: Reference `fig2' on page 3 undefined on input line 29.
-
+File: figure/fig1.png Graphic file (type QTm)
+<use  "figure/fig1.png" >
 File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [3
+ <figure/buaamark.eps> [3
 
 
 
 ]
+File: figure/fig2.png Graphic file (type QTm)
+ <use  "figure/fig2.png" >
+File: figure/fig3.png Graphic file (type QTm)
 
-LaTeX Warning: Reference `fig3' on page 4 undefined on input line 37.
+<use  "figure/fig3.png" >
 
-)
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [4]
+<figure/buaamark.eps> [4])
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [5]
 \openout2 = `data/3_inject.aux'.
 
  (./data/3_inject.tex
 3\ignorespaces 
 File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [5
+<figure/buaamark.eps> [6
 
 
 
 ]
-
-Package natbib Warning: Citation `5' on page 6 undefined on input line 26.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [6]
 File: figure/buaamark.eps Graphic file (type eps)
  <figure/buaamark.eps> [7]
-
-Package natbib Warning: Citation `7' on page 8 undefined on input line 70.
-
-
-LaTeX Warning: Reference `fig5' on page 8 undefined on input line 76.
-
-)
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [8]
+ <figure/buaamark.eps>
+[8]
+File: figure/fig5.png Graphic file (type QTm)
+ <use  "figure/fig5.png" >
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [9]
+ <figure/buaamark.eps> [9])
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps>
+[10]
 \openout2 = `data/4_hijack.aux'.
 
  (./data/4_hijack.tex
 4\ignorespaces 
-
-LaTeX Warning: Reference `fig6' on page 10 undefined on input line 9.
-
+File: figure/fig6.png Graphic file (type QTm)
+<use  "figure/fig6.png" >
 File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [10
+ <figure/buaamark.eps> [11
 
 
 
 ]
+File: figure/fig7.png Graphic file (type QTm)
+ <use  "figure/fig7.png" >
+File: figure/fig8.png Graphic file (type QTm)
 
-Package natbib Warning: Citation `24' on page 11 undefined on input line 44.
+<use  "figure/fig8.png" >
 
-
-LaTeX Warning: Reference `fig9' on page 11 undefined on input line 57.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [11]
-
-Package natbib Warning: Citation `6' on page 12 undefined on input line 78.
-
-
-Package natbib Warning: Citation `2' on page 12 undefined on input line 80.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [12])
+<figure/buaamark.eps> [12]
+File: figure/fig9.png Graphic file (type QTm)
+ <use  "figure/fig9.png" >
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [13]
+<figure/buaamark.eps> [13]
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [14])
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps>
+[15]
 \openout2 = `data/5_mini_notify.aux'.
 
-
-(./data/5_mini_notify.tex
+ (./data/5_mini_notify.tex
 5\ignorespaces 
 File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [14
+<figure/buaamark.eps> [16
 
 
 
 ]
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [15]
-
-LaTeX Warning: Reference `fig10' on page 16 undefined on input line 47.
-
-
-LaTeX Warning: Reference `fig11' on page 16 undefined on input line 54.
-
-File: figure/buaamark.eps Graphic file (type eps)
-<figure/buaamark.eps> [16]
-
-Package natbib Warning: Citation `16' on page 17 undefined on input line 61.
-
-
-Package natbib Warning: Citation `17' on page 17 undefined on input line 61.
-
-)
-File: figure/buaamark.eps Graphic file (type eps)
  <figure/buaamark.eps> [17]
+File: figure/fig10.png Graphic file (type QTm)
+
+<use  "figure/fig10.png" >
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [18]
+File: figure/fig11.png Graphic file (type QTm)
+
+<use  "figure/fig11.png" >)
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [19]
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps>
+[20]
 \openout2 = `data/6_conclusion.aux'.
 
  (./data/6_conclusion.tex
 6\ignorespaces 
 )
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [18
+ <figure/buaamark.eps> [21
 
 
 
 ]
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [19]
+ <figure/buaamark.eps> [22]
+\openout2 = `data/bachelor/thanks.aux'.
+
+
+(./data/bachelor/thanks.tex
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [23
+
+
+
+])
 \openout2 = `data/reference.aux'.
 
  (./data/reference.tex
 (./sample-bachelor.bbl
-LaTeX Font Info:    Try loading font information for EU1+txtt on input line 17.
+LaTeX Font Info:    Try loading font information for EU1+txtt on input line 16.
 
-LaTeX Font Info:    No file EU1txtt.fd. on input line 17.
+LaTeX Font Info:    No file EU1txtt.fd. on input line 16.
 
 
 LaTeX Font Warning: Font shape `EU1/txtt/m/n' undefined
-(Font)              using `EU1/lmr/m/n' instead on input line 17.
+(Font)              using `EU1/lmr/m/n' instead on input line 16.
 
 .................................................
 . fontspec info: "no-scripts"
 . 
 . Font FangSong does not contain any OpenType `Script' information.
 .................................................
-\g_fontspec_family_FangSong_int=\count350
+\g_fontspec_family_FangSong_int=\count348
 .................................................
 . fontspec info: "defining-font"
 . 
@@ -2080,27 +1994,26 @@ talicFont={*},BoldItalicFont={*},SlantedFont={*},BoldSlantedFont={*}].
 . * 'sl/,FakeBold={4.000000000}' with NFSS spec.:
 . <->"FangSong/ICU:mapping=tex-text;embolden=4.000000000;"
 .................................................
-)
 File: figure/buaamark.eps Graphic file (type eps)
- <figure/buaamark.eps> [20
+<figure/buaamark.eps> [24
+
 
 
 
 
 ])
+File: figure/buaamark.eps Graphic file (type eps)
+ <figure/buaamark.eps> [25])
 \tf@thm=\write5
 \openout5 = `sample-bachelor.thm'.
 
-
-
-Package natbib Warning: There were undefined citations.
-
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 51.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 51.
-(./sample-bachelor.aux (./data/com_info.aux) (./data/bachelor/bachelor_info.aux
-) (./data/abstract.aux) (./data/1_intro.aux) (./data/2_need.aux)
-(./data/3_inject.aux) (./data/4_hijack.aux) (./data/5_mini_notify.aux)
-(./data/6_conclusion.aux) (./data/reference.aux))
+ (./sample-bachelor.aux
+(./data/com_info.aux) (./data/bachelor/bachelor_info.aux) (./data/abstract.aux)
+(./data/1_intro.aux) (./data/2_need.aux) (./data/3_inject.aux)
+(./data/4_hijack.aux) (./data/5_mini_notify.aux) (./data/6_conclusion.aux)
+(./data/bachelor/thanks.aux) (./data/reference.aux))
 Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 51.
 Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 51.
 
@@ -2111,17 +2024,14 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were undefined references.
-
  ) 
 Here is how much of TeX's memory you used:
- 26987 strings out of 494003
- 516212 string characters out of 3152809
- 571986 words of memory out of 3000000
- 29704 multiletter control sequences out of 15000+200000
- 37466 words of font info for 179 fonts, out of 3000000 for 9000
+ 26911 strings out of 494003
+ 512791 string characters out of 3152809
+ 573327 words of memory out of 3000000
+ 29618 multiletter control sequences out of 15000+200000
+ 37402 words of font info for 171 fonts, out of 3000000 for 9000
  1144 hyphenation exceptions out of 8191
- 61i,13n,47p,902b,388s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 61i,13n,47p,902b,529s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on sample-bachelor.pdf (27 pages).
+Output written on sample-bachelor.pdf (29 pages).

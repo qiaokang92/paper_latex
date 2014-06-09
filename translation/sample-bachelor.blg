@@ -4,6 +4,7 @@ The top-level auxiliary file: sample-bachelor.aux
 The style file: buaathesis.bst
 A level-1 auxiliary file: data/com_info.aux
 A level-1 auxiliary file: data/bachelor/bachelor_info.aux
+A level-1 auxiliary file: data/bachelor/assign.aux
 A level-1 auxiliary file: data/abstract.aux
 A level-1 auxiliary file: data/1_intro.aux
 A level-1 auxiliary file: data/2_need.aux
@@ -11,6 +12,7 @@ A level-1 auxiliary file: data/3_inject.aux
 A level-1 auxiliary file: data/4_hijack.aux
 A level-1 auxiliary file: data/5_mini_notify.aux
 A level-1 auxiliary file: data/6_conclusion.aux
+A level-1 auxiliary file: data/bachelor/thanks.aux
 A level-1 auxiliary file: data/reference.aux
 new.block is an unknown function---line 74 of file buaathesis.bst
 remove.dots is an unknown function---line 521 of file buaathesis.bst
@@ -28,136 +30,163 @@ ouput is an unknown function---line 2062 of file buaathesis.bst
 format.conference.title is an unknown function---line 2580 of file buaathesis.bst
 format.cconference.title is an unknown function---line 2615 of file buaathesis.bst
 Database file #1: data/bibs.bib
-Warning--entry type for "silvio" isn't style-file defined
---line 25 of file data/bibs.bib
-Warning--entry type for "simple" isn't style-file defined
---line 55 of file data/bibs.bib
-Warning--entry type for "modern" isn't style-file defined
---line 97 of file data/bibs.bib
-Warning--entry type for "subversive" isn't style-file defined
---line 111 of file data/bibs.bib
-Warning--entry type for "ELFsh" isn't style-file defined
---line 123 of file data/bibs.bib
-Warning--entry type for "elf1.2" isn't style-file defined
---line 175 of file data/bibs.bib
-Warning--entry type for "infelf" isn't style-file defined
---line 209 of file data/bibs.bib
-Warning--I didn't find a database entry for "1"
-Warning--I didn't find a database entry for "20"
-Warning--I didn't find a database entry for "4"
-Warning--I didn't find a database entry for "7"
-Warning--I didn't find a database entry for "12"
-Warning--I didn't find a database entry for "19"
-Warning--I didn't find a database entry for "21"
-Warning--I didn't find a database entry for "22"
-Warning--I didn't find a database entry for "5"
-Warning--I didn't find a database entry for "18"
-Warning--I didn't find a database entry for "9"
-Warning--I didn't find a database entry for "14"
-Warning--I didn't find a database entry for "11"
-Warning--I didn't find a database entry for "25"
-Warning--I didn't find a database entry for "15"
-Warning--I didn't find a database entry for "16"
-Warning--I didn't find a database entry for "3"
-Warning--I didn't find a database entry for "17"
-Warning--I didn't find a database entry for "24"
-Warning--I didn't find a database entry for "6"
-Warning--I didn't find a database entry for "2"
+I was expecting a `,' or a `}'---line 91 of file data/bibs.bib
+ : 
+ : year={1982},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--entry type for "12" isn't style-file defined
+--line 185 of file data/bibs.bib
+Warning--entry type for "14" isn't style-file defined
+--line 215 of file data/bibs.bib
+Warning--entry type for "18" isn't style-file defined
+--line 257 of file data/bibs.bib
+Warning--entry type for "19" isn't style-file defined
+--line 271 of file data/bibs.bib
+Warning--entry type for "20" isn't style-file defined
+--line 283 of file data/bibs.bib
+Warning--entry type for "23" isn't style-file defined
+--line 323 of file data/bibs.bib
+Warning--entry type for "24" isn't style-file defined
+--line 339 of file data/bibs.bib
+Warning--entry type for "15" isn't style-file defined
+--line 355 of file data/bibs.bib
 Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
-You can't pop an empty literal stack for entry cerberus
+You can't pop an empty literal stack for entry 1
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry cerberus
+You can't pop an empty literal stack for entry 1
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry silvio
+Warning--empty year in 20
+You can't pop an empty literal stack for entry 20
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry printme
+Warning--empty author in 4
+You can't pop an empty literal stack for entry 4
 while executing---line 3165 of file buaathesis.bst
-Warning--empty author and editor in simple
-You can't pop an empty literal stack for entry simple
+You can't pop an empty literal stack for entry 4
 while executing---line 3165 of file buaathesis.bst
-Warning--empty year in simple
-You can't pop an empty literal stack for entry simple
+Warning--empty year in 7
+You can't pop an empty literal stack for entry 7
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry prototype
+You can't pop an empty literal stack for entry 7
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry prototype
+You can't pop an empty literal stack for entry 7
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry sharelib
+You can't pop an empty literal stack for entry 12
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry sharelib
+You can't pop an empty literal stack for entry 19
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry modern
+Warning--empty year in 19
+You can't pop an empty literal stack for entry 19
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry subversive
+You can't pop an empty literal stack for entry 21
 while executing---line 3165 of file buaathesis.bst
-Warning--empty year in subversive
-You can't pop an empty literal stack for entry subversive
+You can't pop an empty literal stack for entry 21
 while executing---line 3165 of file buaathesis.bst
-Warning--empty year in ELFsh
-You can't pop an empty literal stack for entry ELFsh
+Warning--empty journal in 22
+Warning--empty year in 22
+You can't pop an empty literal stack for entry 22
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry disk
+You can't pop an empty literal stack for entry 22
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry disk
+You can't pop an empty literal stack for entry 22
 while executing---line 3165 of file buaathesis.bst
-Warning--empty journal in apple
-Warning--empty year in apple
-You can't pop an empty literal stack for entry apple
+Warning--empty author in 5
+You can't pop an empty literal stack for entry 5
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry apple
+You can't pop an empty literal stack for entry 5
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry apple
+You can't pop an empty literal stack for entry 18
 while executing---line 3165 of file buaathesis.bst
-Warning--empty publisher in vxworks1
-You can't pop an empty literal stack for entry elf1.2
+You can't pop an empty literal stack for entry 9
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry heike
+You can't pop an empty literal stack for entry 9
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry heike
+Warning--empty author and editor in 14
+You can't pop an empty literal stack for entry 14
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry heike
+Warning--empty year in 14
+You can't pop an empty literal stack for entry 14
 while executing---line 3165 of file buaathesis.bst
-You can't pop an empty literal stack for entry infelf
+You can't pop an empty literal stack for entry 11
 while executing---line 3165 of file buaathesis.bst
-You've used 15 entries,
+You can't pop an empty literal stack for entry 11
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 24
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 15
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 16
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 16
+while executing---line 3165 of file buaathesis.bst
+Warning--empty author in 3
+You can't pop an empty literal stack for entry 3
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 3
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 17
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 17
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 6
+while executing---line 3165 of file buaathesis.bst
+Warning--empty journal in 2
+You can't pop an empty literal stack for entry 2
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 2
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 8
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 8
+while executing---line 3165 of file buaathesis.bst
+Warning--empty journal in 10
+You can't pop an empty literal stack for entry 10
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 10
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 13
+while executing---line 3165 of file buaathesis.bst
+You can't pop an empty literal stack for entry 23
+while executing---line 3165 of file buaathesis.bst
+You've used 24 entries,
             6589 wiz_defined-function locations,
-            1275 strings with 9839 characters,
-and the built_in function-call counts, 3914 in all, are:
-= -- 347
-> -- 32
-< -- 15
-+ -- 32
-- -- 16
-* -- 211
-:= -- 561
-add.period$ -- 50
-call.type$ -- 15
-change.case$ -- 15
-chr.to.int$ -- 15
-cite$ -- 23
-duplicate$ -- 209
-empty$ -- 552
-format.name$ -- 36
-if$ -- 966
-int.to.chr$ -- 1
-int.to.str$ -- 16
-missing$ -- 24
-newline$ -- 88
-num.names$ -- 28
-pop$ -- 108
+            1283 strings with 10358 characters,
+and the built_in function-call counts, 5837 in all, are:
+= -- 509
+> -- 44
+< -- 20
++ -- 51
+- -- 22
+* -- 319
+:= -- 844
+add.period$ -- 74
+call.type$ -- 24
+change.case$ -- 24
+chr.to.int$ -- 23
+cite$ -- 40
+duplicate$ -- 327
+empty$ -- 838
+format.name$ -- 48
+if$ -- 1422
+int.to.chr$ -- 2
+int.to.str$ -- 25
+missing$ -- 33
+newline$ -- 130
+num.names$ -- 40
+pop$ -- 162
 preamble$ -- 1
-purify$ -- 15
+purify$ -- 24
 quote$ -- 0
-skip$ -- 167
+skip$ -- 264
 stack$ -- 0
-substring$ -- 59
-swap$ -- 24
-text.length$ -- 1
+substring$ -- 52
+swap$ -- 26
+text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 58
-warning$ -- 7
-while$ -- 16
+type$ -- 94
+warning$ -- 12
+while$ -- 20
 width$ -- 0
-write$ -- 206
-(There were 38 error messages)
+write$ -- 323
+(There were 57 error messages)
